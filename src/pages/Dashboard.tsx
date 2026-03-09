@@ -24,7 +24,6 @@ const Dashboard = () => {
       if (data?.name) setProfileName(data.name);
     });
   }, [authUser]);
-  const navigate = useNavigate();
   const completedCount = user.goals.filter(g => g.completed).length;
   const totalGoals = user.goals.length;
   const allDone = completedCount === totalGoals;
