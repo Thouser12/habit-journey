@@ -8,10 +8,22 @@ import LevelBadge from '@/components/LevelBadge';
 import TermsModal from '@/components/TermsModal';
 import { History, Stethoscope, Sparkles, User, Shield } from 'lucide-react';
 import DevLevelSwitcher from '@/components/DevLevelSwitcher';
+import { useAuth } from '@/contexts/AuthContext';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 const Dashboard = () => {
   const { user, toggleGoal, acceptTerms, getWeeklyProgress, setLevel } = useUserData();
+  const { user: authUser } = useAuth();
+  const [profileName, setProfileName] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!authUser) return;
+    supabase.from('profiles').select('name').eq('id', authUser.id).single().then(({ data }) => {
+      if (data?.name) setProfileName(data.name);
+    });
+  }, [authUser]);
   const completedCount = user.goals.filter(g => g.completed).length;
   const totalGoals = user.goals.length;
   const allDone = completedCount === totalGoals;
@@ -25,7 +37,7 @@ const Dashboard = () => {
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Olá, {user.name}</h1>
+              <h1 className="text-2xl font-bold text-foreground">Olá, {profileName || user.name}</h1>
               <p className="text-sm text-muted-foreground">Vamos evoluir hoje!</p>
             </div>
             <button onClick={() => navigate('/nivel')} className="transition-transform hover:scale-105">
