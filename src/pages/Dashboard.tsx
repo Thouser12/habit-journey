@@ -8,9 +8,22 @@ import LevelBadge from '@/components/LevelBadge';
 import TermsModal from '@/components/TermsModal';
 import { History, Stethoscope, Sparkles, User, Shield } from 'lucide-react';
 import DevLevelSwitcher from '@/components/DevLevelSwitcher';
+import { useAuth } from '@/contexts/AuthContext';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 const Dashboard = () => {
   const { user, toggleGoal, acceptTerms, getWeeklyProgress, setLevel } = useUserData();
+  const { user: authUser } = useAuth();
+  const [profileName, setProfileName] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!authUser) return;
+    supabase.from('profiles').select('name').eq('id', authUser.id).single().then(({ data }) => {
+      if (data?.name) setProfileName(data.name);
+    });
+  }, [authUser]);
   const navigate = useNavigate();
   const completedCount = user.goals.filter(g => g.completed).length;
   const totalGoals = user.goals.length;
