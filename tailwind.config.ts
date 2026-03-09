@@ -47,6 +47,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        level: {
+          bronze: "hsl(var(--level-bronze))",
+          prata: "hsl(var(--level-prata))",
+          ouro: "hsl(var(--level-ouro))",
+          platina: "hsl(var(--level-platina))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
