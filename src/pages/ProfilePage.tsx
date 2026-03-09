@@ -69,10 +69,10 @@ const ProfilePage = () => {
         {/* Profile header */}
         <div className="mb-8 flex flex-col items-center gap-4 text-center">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent text-3xl font-bold text-foreground">
-            {user.name.charAt(0)}
+            {displayName.charAt(0)}
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-foreground">{user.name}</h2>
+            <h2 className="text-2xl font-bold text-foreground">{displayName}</h2>
             <p className="text-sm text-muted-foreground">Membro ativo</p>
           </div>
           <LevelBadge level={user.level} size="lg" />
