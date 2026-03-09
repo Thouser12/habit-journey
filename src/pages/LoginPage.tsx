@@ -30,14 +30,12 @@ const LoginPage = () => {
     setError("");
     setIsLoading(true);
 
-    // Placeholder login — simulate network delay
-    await new Promise((r) => setTimeout(r, 1500));
+    const { error } = await signIn(email, password);
 
-    // Simulate error for demo; replace with real auth later
-    if (email === "test@test.com" && password === "password") {
-      navigate("/");
+    if (error) {
+      setError(error);
     } else {
-      setError("Invalid email or password");
+      navigate("/");
     }
 
     setIsLoading(false);
