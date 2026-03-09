@@ -37,7 +37,7 @@ const Dashboard = () => {
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Olá, {user.name}</h1>
+              <h1 className="text-2xl font-bold text-foreground">Olá, {profileName || user.name}</h1>
               <p className="text-sm text-muted-foreground">Vamos evoluir hoje!</p>
             </div>
             <button onClick={() => navigate('/nivel')} className="transition-transform hover:scale-105">
