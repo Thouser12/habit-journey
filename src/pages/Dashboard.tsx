@@ -113,6 +113,8 @@ const Dashboard = () => {
               Perfil
             </Button>
           </div>
+
+          <DevLevelSwitcher current={user.level} onSwitch={setLevel} />
         </div>
       </div>
     </>
