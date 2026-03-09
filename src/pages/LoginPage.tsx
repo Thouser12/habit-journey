@@ -152,7 +152,7 @@ const LoginPage = () => {
       <div className="mt-8 flex items-center gap-1.5 text-sm">
         <span className="text-muted-foreground">New here?</span>
         <button
-          onClick={() => {/* navigate to signup later */}}
+          onClick={() => navigate("/signup")}
           className="text-info font-medium hover:underline underline-offset-2 transition-colors"
         >
           Create Account

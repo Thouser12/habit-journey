@@ -1,12 +1,14 @@
-import { useState } from 'react';
-import { useUserData } from '@/hooks/useUserData';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Stethoscope, LinkIcon, Unlink } from 'lucide-react';
+import { ArrowLeft, Stethoscope, LinkIcon, Unlink, Loader2 } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const statusMap = {
   pending: { label: 'Pendente', variant: 'secondary' as const },
@@ -14,20 +16,77 @@ const statusMap = {
   rejected: { label: 'Recusado', variant: 'destructive' as const },
 };
 
-const DoctorPage = () => {
-  const { user, requestDoctor, removeDoctor } = useUserData();
-  const navigate = useNavigate();
-  const [doctorId, setDoctorId] = useState('');
+interface DoctorConnection {
+  id: string;
+  doctor_id: string;
+  doctor_name: string;
+  status: string;
+  custom_goals: string[] | null;
+}
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (doctorId.trim()) {
-      requestDoctor(doctorId.trim());
-      setDoctorId('');
+const DoctorPage = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [doctorId, setDoctorId] = useState('');
+  const [conn, setConn] = useState<DoctorConnection | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    fetchConnection();
+  }, [user]);
+
+  const fetchConnection = async () => {
+    const { data, error } = await supabase
+      .from('doctor_connections')
+      .select('*')
+      .eq('user_id', user!.id)
+      .maybeSingle();
+
+    if (!error && data) {
+      setConn(data as DoctorConnection);
     }
+    setLoading(false);
   };
 
-  const conn = user.doctorConnection;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!doctorId.trim() || !user) return;
+
+    setSubmitting(true);
+    const { error } = await supabase.from('doctor_connections').insert({
+      user_id: user.id,
+      doctor_id: doctorId.trim(),
+      doctor_name: `Dr. ${doctorId.trim().toUpperCase()}`,
+      status: 'pending',
+    });
+
+    if (error) {
+      toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    } else {
+      setDoctorId('');
+      await fetchConnection();
+      toast({ title: 'Solicitação enviada' });
+    }
+    setSubmitting(false);
+  };
+
+  const handleRemove = async () => {
+    if (!conn) return;
+    setSubmitting(true);
+    const { error } = await supabase
+      .from('doctor_connections')
+      .delete()
+      .eq('id', conn.id);
+
+    if (!error) {
+      setConn(null);
+      toast({ title: 'Vínculo removido' });
+    }
+    setSubmitting(false);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -50,19 +109,23 @@ const DoctorPage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {conn ? (
+            {loading ? (
+              <div className="flex justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : conn ? (
               <div className="space-y-4">
                 <div className="flex items-center justify-between rounded-lg border border-border p-4">
                   <div>
-                    <p className="font-medium text-foreground">{conn.doctorName}</p>
-                    <p className="text-sm text-muted-foreground">ID: {conn.doctorId}</p>
+                    <p className="font-medium text-foreground">{conn.doctor_name}</p>
+                    <p className="text-sm text-muted-foreground">ID: {conn.doctor_id}</p>
                   </div>
-                  <Badge variant={statusMap[conn.status].variant}>
-                    {statusMap[conn.status].label}
+                  <Badge variant={statusMap[conn.status as keyof typeof statusMap]?.variant ?? 'secondary'}>
+                    {statusMap[conn.status as keyof typeof statusMap]?.label ?? conn.status}
                   </Badge>
                 </div>
-                <Button variant="outline" className="w-full" onClick={removeDoctor}>
-                  <Unlink className="mr-2 h-4 w-4" />
+                <Button variant="outline" className="w-full" onClick={handleRemove} disabled={submitting}>
+                  {submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Unlink className="mr-2 h-4 w-4" />}
                   Remover Vínculo
                 </Button>
               </div>
@@ -77,8 +140,8 @@ const DoctorPage = () => {
                     onChange={(e) => setDoctorId(e.target.value)}
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={!doctorId.trim()}>
-                  <LinkIcon className="mr-2 h-4 w-4" />
+                <Button type="submit" className="w-full" disabled={!doctorId.trim() || submitting}>
+                  {submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LinkIcon className="mr-2 h-4 w-4" />}
                   Solicitar Vínculo
                 </Button>
               </form>
