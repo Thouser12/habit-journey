@@ -1,5 +1,5 @@
 import { Level } from '@/types/app';
-import { LEVEL_LABELS } from '@/data/goals';
+import { LEVEL_LABELS, LEVEL_ORDER } from '@/data/goals';
 import { cn } from '@/lib/utils';
 import badgeBronze from '@/assets/badge-bronze.png';
 import badgePrata from '@/assets/badge-prata.png';
@@ -13,11 +13,27 @@ const badgeImages: Record<Level, string> = {
   platina: badgePlatina,
 };
 
-const glowStyles: Record<Level, string> = {
-  bronze: 'shadow-[0_0_20px_hsl(var(--level-bronze-glow)/0.4)]',
-  prata: 'shadow-[0_0_20px_hsl(var(--level-prata-glow)/0.4)]',
-  ouro: 'shadow-[0_0_20px_hsl(var(--level-ouro-glow)/0.4)]',
-  platina: 'shadow-[0_0_20px_hsl(var(--level-platina-glow)/0.4)]',
+const glowConfig: Record<Level, { color: string; size: string; animation: string }> = {
+  bronze: {
+    color: 'drop-shadow(0 0 4px hsl(30 58% 50% / 0.5)) drop-shadow(0 0 8px hsl(30 70% 63% / 0.3))',
+    size: '',
+    animation: 'glow-bronze',
+  },
+  prata: {
+    color: 'drop-shadow(0 0 6px hsl(210 6% 75% / 0.6)) drop-shadow(0 0 14px hsl(210 20% 90% / 0.35))',
+    size: '',
+    animation: 'glow-prata',
+  },
+  ouro: {
+    color: 'drop-shadow(0 0 10px hsl(45 90% 61% / 0.6)) drop-shadow(0 0 22px hsl(48 100% 74% / 0.35))',
+    size: '',
+    animation: 'glow-ouro',
+  },
+  platina: {
+    color: 'drop-shadow(0 0 14px hsl(200 80% 75% / 0.7)) drop-shadow(0 0 32px hsl(192 100% 88% / 0.4)) drop-shadow(0 0 48px hsl(200 80% 75% / 0.2))',
+    size: '',
+    animation: 'glow-platina',
+  },
 };
 
 interface LevelBadgeProps {
@@ -34,15 +50,16 @@ const sizeMap = {
 };
 
 const LevelBadge = ({ level, size = 'sm', showLabel = true }: LevelBadgeProps) => {
+  const glow = glowConfig[level];
+
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className={cn('relative rounded-full', glowStyles[level], 'animate-glow-pulse')}>
-        <img
-          src={badgeImages[level]}
-          alt={`Badge ${LEVEL_LABELS[level]}`}
-          className={cn(sizeMap[size], 'object-contain drop-shadow-lg')}
-        />
-      </div>
+      <img
+        src={badgeImages[level]}
+        alt={`Badge ${LEVEL_LABELS[level]}`}
+        className={cn(sizeMap[size], 'object-contain animate-glow-pulse')}
+        style={{ filter: glow.color }}
+      />
       {showLabel && (
         <span className="text-sm font-semibold text-foreground">{LEVEL_LABELS[level]}</span>
       )}
