@@ -7,9 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import LevelBadge from '@/components/LevelBadge';
 import TermsModal from '@/components/TermsModal';
 import { History, Stethoscope, Sparkles, User, Shield } from 'lucide-react';
+import DevLevelSwitcher from '@/components/DevLevelSwitcher';
 
 const Dashboard = () => {
-  const { user, toggleGoal, acceptTerms, getWeeklyProgress } = useUserData();
+  const { user, toggleGoal, acceptTerms, getWeeklyProgress, setLevel } = useUserData();
   const navigate = useNavigate();
   const completedCount = user.goals.filter(g => g.completed).length;
   const totalGoals = user.goals.length;
