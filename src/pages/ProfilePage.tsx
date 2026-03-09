@@ -4,6 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import LevelBadge from '@/components/LevelBadge';
 import { ArrowLeft, Flame, Target, Award, Calendar, Zap, Heart } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 const achievements = [
   { id: 'first-day', title: 'Primeiro Dia', description: 'Completou metas pela primeira vez', icon: Target, unlocked: true },
@@ -16,7 +19,18 @@ const achievements = [
 
 const ProfilePage = () => {
   const { user } = useUserData();
+  const { user: authUser } = useAuth();
   const navigate = useNavigate();
+  const [profileName, setProfileName] = useState('');
+
+  useEffect(() => {
+    if (!authUser) return;
+    supabase.from('profiles').select('name').eq('id', authUser.id).single().then(({ data }) => {
+      if (data?.name) setProfileName(data.name);
+    });
+  }, [authUser]);
+
+  const displayName = profileName || user.name;
 
   // Calculate streak (simplified: count consecutive days with >0 goals completed from daily records)
   const streak = user.dailyRecords.reduce((count, record) => {
@@ -55,10 +69,10 @@ const ProfilePage = () => {
         {/* Profile header */}
         <div className="mb-8 flex flex-col items-center gap-4 text-center">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent text-3xl font-bold text-foreground">
-            {user.name.charAt(0)}
+            {displayName.charAt(0)}
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-foreground">{user.name}</h2>
+            <h2 className="text-2xl font-bold text-foreground">{displayName}</h2>
             <p className="text-sm text-muted-foreground">Membro ativo</p>
           </div>
           <LevelBadge level={user.level} size="lg" />
