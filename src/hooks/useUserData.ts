@@ -147,6 +147,11 @@ export function useUserData() {
     return totalGoals > 0 ? Math.round((totalCompleted / totalGoals) * 100) : 0;
   }, [user]);
 
+  const setLevel = useCallback((level: Level) => {
+    const customGoals = user.doctorConnection?.status === 'accepted' ? user.doctorConnection.customGoals : undefined;
+    save({ ...user, level, goals: createGoals(level, customGoals) });
+  }, [user, save]);
+
   return {
     user,
     toggleGoal,
@@ -154,6 +159,7 @@ export function useUserData() {
     requestDoctor,
     removeDoctor,
     getWeeklyProgress,
+    setLevel,
   };
 }
 
