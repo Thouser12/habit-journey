@@ -31,6 +31,14 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -47,11 +55,20 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        pending: "hsl(var(--pending))",
         level: {
           bronze: "hsl(var(--level-bronze))",
+          "bronze-secondary": "hsl(var(--level-bronze-secondary))",
+          "bronze-glow": "hsl(var(--level-bronze-glow))",
           prata: "hsl(var(--level-prata))",
+          "prata-secondary": "hsl(var(--level-prata-secondary))",
+          "prata-glow": "hsl(var(--level-prata-glow))",
           ouro: "hsl(var(--level-ouro))",
+          "ouro-secondary": "hsl(var(--level-ouro-secondary))",
+          "ouro-glow": "hsl(var(--level-ouro-glow))",
           platina: "hsl(var(--level-platina))",
+          "platina-secondary": "hsl(var(--level-platina-secondary))",
+          "platina-glow": "hsl(var(--level-platina-glow))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -71,25 +88,22 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { opacity: "0.4" },
+          "50%": { opacity: "0.8" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
       },
     },
   },

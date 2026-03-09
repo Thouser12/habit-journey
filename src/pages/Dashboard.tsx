@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import LevelBadge from '@/components/LevelBadge';
 import TermsModal from '@/components/TermsModal';
-import { History, Stethoscope, Sparkles, CheckCircle2 } from 'lucide-react';
+import { History, Stethoscope, Sparkles, User, Shield } from 'lucide-react';
 
 const Dashboard = () => {
   const { user, toggleGoal, acceptTerms, getWeeklyProgress } = useUserData();
@@ -24,15 +24,17 @@ const Dashboard = () => {
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Olá, {user.name} 👋</h1>
+              <h1 className="text-2xl font-bold text-foreground">Olá, {user.name}</h1>
               <p className="text-sm text-muted-foreground">Vamos evoluir hoje!</p>
             </div>
-            <LevelBadge level={user.level} size="lg" />
+            <button onClick={() => navigate('/nivel')} className="transition-transform hover:scale-105">
+              <LevelBadge level={user.level} size="md" showLabel={false} />
+            </button>
           </div>
 
           {/* Doctor indicator */}
           {user.doctorConnection?.status === 'accepted' && (
-            <div className="mb-4 flex items-center gap-2 rounded-lg border border-border bg-accent/50 px-4 py-2 text-sm">
+            <div className="mb-4 flex items-center gap-2 rounded-lg border border-border bg-accent px-4 py-2 text-sm">
               <Stethoscope className="h-4 w-4 text-primary" />
               <span>Vinculado ao {user.doctorConnection.doctorName}</span>
             </div>
@@ -56,16 +58,18 @@ const Dashboard = () => {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center justify-between text-base">
                 <span>Metas de Hoje</span>
-                <span className={`text-sm font-semibold ${allDone ? 'text-primary' : 'text-muted-foreground'}`}>
+                <span className={`text-sm font-semibold ${allDone ? 'text-success' : 'text-muted-foreground'}`}>
                   {completedCount}/{totalGoals}
                 </span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-2">
               {user.goals.map(goal => (
                 <label
                   key={goal.id}
-                  className="flex cursor-pointer items-start gap-3 rounded-lg border border-border p-3 transition-all hover:bg-accent/50 has-[data-state=checked]:border-primary/30 has-[data-state=checked]:bg-primary/5"
+                  className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-all hover:bg-accent/50 ${
+                    goal.completed ? 'border-success/20 bg-success/5' : 'border-border'
+                  }`}
                 >
                   <Checkbox
                     checked={goal.completed}
@@ -82,22 +86,30 @@ const Dashboard = () => {
 
           {/* Completion celebration */}
           {allDone && (
-            <div className="mb-6 flex flex-col items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 p-6 text-center">
-              <Sparkles className="h-10 w-10 text-primary" />
-              <p className="text-lg font-bold text-foreground">Parabéns! 🎉</p>
+            <div className="mb-6 flex flex-col items-center gap-2 rounded-xl border border-success/20 bg-success/5 p-6 text-center">
+              <Sparkles className="h-10 w-10 text-success" />
+              <p className="text-lg font-bold text-foreground">Parabéns!</p>
               <p className="text-sm text-muted-foreground">Todas as metas de hoje foram concluídas!</p>
             </div>
           )}
 
           {/* Action buttons */}
-          <div className="flex gap-3">
-            <Button variant="outline" className="flex-1" onClick={() => navigate('/historico')}>
+          <div className="grid grid-cols-2 gap-3">
+            <Button variant="outline" onClick={() => navigate('/historico')}>
               <History className="mr-2 h-4 w-4" />
               Histórico
             </Button>
-            <Button variant="outline" className="flex-1" onClick={() => navigate('/medico')}>
+            <Button variant="outline" onClick={() => navigate('/medico')}>
               <Stethoscope className="mr-2 h-4 w-4" />
               Médico
+            </Button>
+            <Button variant="outline" onClick={() => navigate('/nivel')}>
+              <Shield className="mr-2 h-4 w-4" />
+              Meu Nível
+            </Button>
+            <Button variant="outline" onClick={() => navigate('/perfil')}>
+              <User className="mr-2 h-4 w-4" />
+              Perfil
             </Button>
           </div>
         </div>
