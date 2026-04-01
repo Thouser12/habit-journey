@@ -44,7 +44,7 @@ const SignupPage = () => {
       <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
         <Card className="w-full max-w-sm border-border/50 shadow-lg shadow-black/20">
           <CardContent className="pt-6 text-center space-y-4">
-            <Shield className="w-12 h-12 text-info mx-auto" />
+            <Shield className="w-12 h-12 text-primary mx-auto" />
             <h2 className="text-xl font-bold text-foreground">Check your email</h2>
             <p className="text-sm text-muted-foreground">
               We sent a confirmation link to <strong className="text-foreground">{email}</strong>. Click it to activate your account.
@@ -61,8 +61,8 @@ const SignupPage = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
       <div className="flex flex-col items-center mb-10">
-        <div className="w-20 h-20 rounded-2xl bg-info/15 flex items-center justify-center mb-5 ring-1 ring-info/20">
-          <Shield className="w-10 h-10 text-info" />
+        <div className="w-20 h-20 rounded-2xl bg-primary/15 flex items-center justify-center mb-5 ring-1 ring-primary/20">
+          <Shield className="w-10 h-10 text-primary" />
         </div>
         <h1 className="text-2xl font-bold text-foreground tracking-tight">Habit Evolution</h1>
         <p className="text-sm text-muted-foreground mt-1.5 text-center max-w-[260px]">
@@ -86,7 +86,7 @@ const SignupPage = () => {
                 placeholder="Your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="h-12 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-info/40 focus-visible:border-info/50"
+                className="h-12 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-primary/40 focus-visible:border-primary/50"
               />
             </div>
 
@@ -98,7 +98,7 @@ const SignupPage = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="h-12 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-info/40 focus-visible:border-info/50"
+                className="h-12 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-primary/40 focus-visible:border-primary/50"
               />
             </div>
 
@@ -111,7 +111,7 @@ const SignupPage = () => {
                   placeholder="Min. 6 characters"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-12 pr-11 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-info/40 focus-visible:border-info/50"
+                  className="h-12 pr-11 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-primary/40 focus-visible:border-primary/50"
                 />
                 <button
                   type="button"
@@ -127,7 +127,7 @@ const SignupPage = () => {
             <Button
               type="submit"
               disabled={!isFormValid || isLoading}
-              className="w-full h-12 bg-info hover:bg-info/90 text-info-foreground font-semibold text-sm tracking-wide rounded-xl transition-all disabled:opacity-40"
+              className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm tracking-wide rounded-xl transition-all disabled:opacity-40"
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
@@ -144,7 +144,7 @@ const SignupPage = () => {
 
       <div className="mt-8 flex items-center gap-1.5 text-sm">
         <span className="text-muted-foreground">Already have an account?</span>
-        <button onClick={() => navigate("/login")} className="text-info font-medium hover:underline underline-offset-2 transition-colors">
+        <button onClick={() => navigate("/login")} className="text-primary font-medium hover:underline underline-offset-2 transition-colors">
           Log In
         </button>
       </div>

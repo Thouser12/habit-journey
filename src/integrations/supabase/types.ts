@@ -19,6 +19,7 @@ export type Database = {
           created_at: string
           custom_goals: Json | null
           doctor_id: string
+          doctor_user_id: string | null
           doctor_name: string
           id: string
           status: string
@@ -29,6 +30,7 @@ export type Database = {
           created_at?: string
           custom_goals?: Json | null
           doctor_id: string
+          doctor_user_id?: string | null
           doctor_name?: string
           id?: string
           status?: string
@@ -39,11 +41,42 @@ export type Database = {
           created_at?: string
           custom_goals?: Json | null
           doctor_id?: string
+          doctor_user_id?: string | null
           doctor_name?: string
           id?: string
           status?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      doctor_profiles: {
+        Row: {
+          id: string
+          name: string
+          crm_number: string | null
+          specialty: string | null
+          doctor_code: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          name?: string
+          crm_number?: string | null
+          specialty?: string | null
+          doctor_code: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          crm_number?: string | null
+          specialty?: string | null
+          doctor_code?: string
+          created_at?: string
+          updated_at?: string
         }
         Relationships: []
       }

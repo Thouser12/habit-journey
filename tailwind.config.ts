@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["'IBM Plex Sans'", "system-ui", "-apple-system", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -35,9 +38,9 @@ export default {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
         },
-        info: {
-          DEFAULT: "hsl(var(--info))",
-          foreground: "hsl(var(--info-foreground))",
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -55,21 +58,6 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        pending: "hsl(var(--pending))",
-        level: {
-          bronze: "hsl(var(--level-bronze))",
-          "bronze-secondary": "hsl(var(--level-bronze-secondary))",
-          "bronze-glow": "hsl(var(--level-bronze-glow))",
-          prata: "hsl(var(--level-prata))",
-          "prata-secondary": "hsl(var(--level-prata-secondary))",
-          "prata-glow": "hsl(var(--level-prata-glow))",
-          ouro: "hsl(var(--level-ouro))",
-          "ouro-secondary": "hsl(var(--level-ouro-secondary))",
-          "ouro-glow": "hsl(var(--level-ouro-glow))",
-          platina: "hsl(var(--level-platina))",
-          "platina-secondary": "hsl(var(--level-platina-secondary))",
-          "platina-glow": "hsl(var(--level-platina-glow))",
-        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -79,6 +67,20 @@ export default {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+        level: {
+          bronze: "hsl(var(--level-bronze))",
+          "bronze-highlight": "hsl(var(--level-bronze-highlight))",
+          "bronze-shadow": "hsl(var(--level-bronze-shadow))",
+          silver: "hsl(var(--level-silver))",
+          "silver-highlight": "hsl(var(--level-silver-highlight))",
+          "silver-shadow": "hsl(var(--level-silver-shadow))",
+          gold: "hsl(var(--level-gold))",
+          "gold-highlight": "hsl(var(--level-gold-highlight))",
+          "gold-shadow": "hsl(var(--level-gold-shadow))",
+          platinum: "hsl(var(--level-platinum))",
+          "platinum-highlight": "hsl(var(--level-platinum-highlight))",
+          "platinum-shadow": "hsl(var(--level-platinum-shadow))",
         },
       },
       borderRadius: {
@@ -95,15 +97,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "glow-pulse": {
-          "0%, 100%": { opacity: "0.4" },
-          "50%": { opacity: "0.8" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
       },
     },
   },

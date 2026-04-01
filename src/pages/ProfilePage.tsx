@@ -89,7 +89,7 @@ const ProfilePage = () => {
           </Card>
           <Card>
             <CardContent className="flex flex-col items-center p-4">
-              <Calendar className="mb-1 h-5 w-5 text-info" />
+              <Calendar className="mb-1 h-5 w-5 text-primary" />
               <span className="text-2xl font-bold text-foreground">{totalDays}</span>
               <span className="text-xs text-muted-foreground">Dias</span>
             </CardContent>

@@ -56,10 +56,25 @@ const DoctorPage = () => {
     if (!doctorId.trim() || !user) return;
 
     setSubmitting(true);
+
+    // Look up the doctor by their code
+    const { data: doctor, error: lookupError } = await supabase
+      .from('doctor_profiles')
+      .select('id, name, doctor_code')
+      .eq('doctor_code', doctorId.trim().toUpperCase())
+      .maybeSingle();
+
+    if (lookupError || !doctor) {
+      toast({ title: 'Erro', description: 'Codigo de medico nao encontrado. Verifique e tente novamente.', variant: 'destructive' });
+      setSubmitting(false);
+      return;
+    }
+
     const { error } = await supabase.from('doctor_connections').insert({
       user_id: user.id,
-      doctor_id: doctorId.trim(),
-      doctor_name: `Dr. ${doctorId.trim().toUpperCase()}`,
+      doctor_id: doctor.doctor_code,
+      doctor_user_id: doctor.id,
+      doctor_name: doctor.name,
       status: 'pending',
     });
 

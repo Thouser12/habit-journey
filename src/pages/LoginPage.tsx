@@ -45,8 +45,8 @@ const LoginPage = () => {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
       {/* Logo / Badge Area */}
       <div className="flex flex-col items-center mb-10">
-        <div className="w-20 h-20 rounded-2xl bg-info/15 flex items-center justify-center mb-5 ring-1 ring-info/20">
-          <Shield className="w-10 h-10 text-info" />
+        <div className="w-20 h-20 rounded-2xl bg-primary/15 flex items-center justify-center mb-5 ring-1 ring-primary/20">
+          <Shield className="w-10 h-10 text-primary" />
         </div>
         <h1 className="text-2xl font-bold text-foreground tracking-tight">
           Habit Evolution
@@ -79,7 +79,7 @@ const LoginPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onBlur={() => setTouched((t) => ({ ...t, email: true }))}
-                className={`h-12 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-info/40 focus-visible:border-info/50 ${
+                className={`h-12 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-primary/40 focus-visible:border-primary/50 ${
                   emailError ? "border-destructive/60 focus-visible:ring-destructive/30" : ""
                 }`}
               />
@@ -101,7 +101,7 @@ const LoginPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onBlur={() => setTouched((t) => ({ ...t, password: true }))}
-                  className={`h-12 pr-11 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-info/40 focus-visible:border-info/50 ${
+                  className={`h-12 pr-11 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-primary/40 focus-visible:border-primary/50 ${
                     passwordError ? "border-destructive/60 focus-visible:ring-destructive/30" : ""
                   }`}
                 />
@@ -123,7 +123,7 @@ const LoginPage = () => {
             <Button
               type="submit"
               disabled={!isFormValid || isLoading}
-              className="w-full h-12 bg-info hover:bg-info/90 text-info-foreground font-semibold text-sm tracking-wide rounded-xl transition-all disabled:opacity-40"
+              className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm tracking-wide rounded-xl transition-all disabled:opacity-40"
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
@@ -139,7 +139,7 @@ const LoginPage = () => {
             <div className="text-center">
               <button
                 type="button"
-                className="text-xs text-muted-foreground hover:text-info transition-colors"
+                className="text-xs text-muted-foreground hover:text-primary transition-colors"
               >
                 Forgot password?
               </button>
@@ -153,7 +153,7 @@ const LoginPage = () => {
         <span className="text-muted-foreground">New here?</span>
         <button
           onClick={() => navigate("/signup")}
-          className="text-info font-medium hover:underline underline-offset-2 transition-colors"
+          className="text-primary font-medium hover:underline underline-offset-2 transition-colors"
         >
           Create Account
         </button>
