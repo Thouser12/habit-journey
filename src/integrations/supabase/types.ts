@@ -14,13 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      chat_messages: {
+        Row: {
+          connection_id: string
+          created_at: string
+          id: string
+          sender_id: string
+          sender_type: string
+          text: string
+        }
+        Insert: {
+          connection_id: string
+          created_at?: string
+          id?: string
+          sender_id: string
+          sender_type: string
+          text: string
+        }
+        Update: {
+          connection_id?: string
+          created_at?: string
+          id?: string
+          sender_id?: string
+          sender_type?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "doctor_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       doctor_connections: {
         Row: {
           created_at: string
           custom_goals: Json | null
           doctor_id: string
-          doctor_user_id: string | null
           doctor_name: string
+          doctor_user_id: string | null
           id: string
           status: string
           updated_at: string
@@ -30,8 +65,8 @@ export type Database = {
           created_at?: string
           custom_goals?: Json | null
           doctor_id: string
-          doctor_user_id?: string | null
           doctor_name?: string
+          doctor_user_id?: string | null
           id?: string
           status?: string
           updated_at?: string
@@ -41,8 +76,8 @@ export type Database = {
           created_at?: string
           custom_goals?: Json | null
           doctor_id?: string
-          doctor_user_id?: string | null
           doctor_name?: string
+          doctor_user_id?: string | null
           id?: string
           status?: string
           updated_at?: string
@@ -52,33 +87,80 @@ export type Database = {
       }
       doctor_profiles: {
         Row: {
+          created_at: string
+          crm_number: string | null
+          doctor_code: string
           id: string
           name: string
-          crm_number: string | null
           specialty: string | null
-          doctor_code: string
-          created_at: string
           updated_at: string
         }
         Insert: {
+          created_at?: string
+          crm_number?: string | null
+          doctor_code: string
           id: string
           name?: string
-          crm_number?: string | null
           specialty?: string | null
-          doctor_code: string
-          created_at?: string
           updated_at?: string
         }
         Update: {
+          created_at?: string
+          crm_number?: string | null
+          doctor_code?: string
           id?: string
           name?: string
-          crm_number?: string | null
           specialty?: string | null
-          doctor_code?: string
-          created_at?: string
           updated_at?: string
         }
         Relationships: []
+      }
+      goals: {
+        Row: {
+          connection_id: string
+          created_at: string
+          description: string | null
+          doctor_id: string
+          frequency: string
+          id: string
+          is_active: boolean
+          patient_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          connection_id: string
+          created_at?: string
+          description?: string | null
+          doctor_id: string
+          frequency?: string
+          id?: string
+          is_active?: boolean
+          patient_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          connection_id?: string
+          created_at?: string
+          description?: string | null
+          doctor_id?: string
+          frequency?: string
+          id?: string
+          is_active?: boolean
+          patient_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "goals_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "doctor_connections"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -86,6 +168,7 @@ export type Database = {
           id: string
           level: string
           name: string
+          role: string
           terms_accepted: boolean
           updated_at: string
         }
@@ -94,6 +177,7 @@ export type Database = {
           id: string
           level?: string
           name?: string
+          role?: string
           terms_accepted?: boolean
           updated_at?: string
         }
@@ -102,6 +186,7 @@ export type Database = {
           id?: string
           level?: string
           name?: string
+          role?: string
           terms_accepted?: boolean
           updated_at?: string
         }
@@ -112,7 +197,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_doctor_code: { Args: never; Returns: string }
     }
     Enums: {
       [_ in never]: never
