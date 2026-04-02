@@ -2,41 +2,30 @@ import { Level } from '@/types/app';
 import { LEVEL_LABELS } from '@/data/goals';
 import { cn } from '@/lib/utils';
 
-const levelStyles: Record<Level, {
-  gradient: string;
-  border: string;
-  shadow: string;
-  glow: string;
-  text: string;
-}> = {
-  bronze: {
-    gradient: 'linear-gradient(145deg, #7B4F2A, #C88A55)',
-    border: 'rgba(123, 79, 42, 0.4)',
-    shadow: '0 2px 8px rgba(123, 79, 42, 0.3), inset 0 1px 0 rgba(200, 138, 85, 0.4)',
-    glow: '0 0 12px rgba(169, 113, 66, 0.3)',
-    text: '#C88A55',
-  },
-  prata: {
-    gradient: 'linear-gradient(145deg, #8D99A6, #E1E7EE)',
-    border: 'rgba(141, 153, 166, 0.4)',
-    shadow: '0 2px 8px rgba(141, 153, 166, 0.3), inset 0 1px 0 rgba(225, 231, 238, 0.4)',
-    glow: '0 0 14px rgba(184, 194, 204, 0.3)',
-    text: '#B8C2CC',
-  },
-  ouro: {
-    gradient: 'linear-gradient(145deg, #9B7A34, #F2D189)',
-    border: 'rgba(155, 122, 52, 0.4)',
-    shadow: '0 2px 10px rgba(214, 169, 79, 0.35), inset 0 1px 0 rgba(242, 209, 137, 0.4)',
-    glow: '0 0 18px rgba(214, 169, 79, 0.35)',
-    text: '#D6A94F',
-  },
-  platina: {
-    gradient: 'linear-gradient(145deg, #5D7F96, #D8F0FF)',
-    border: 'rgba(93, 127, 150, 0.4)',
-    shadow: '0 2px 12px rgba(159, 196, 218, 0.4), inset 0 1px 0 rgba(216, 240, 255, 0.4)',
-    glow: '0 0 24px rgba(159, 196, 218, 0.35)',
-    text: '#9FC4DA',
-  },
+import bronzeBadge from '@/assets/badges/bronze.png';
+import silverBadge from '@/assets/badges/silver.png';
+import goldBadge from '@/assets/badges/gold.png';
+import platinumBadge from '@/assets/badges/platinum.png';
+
+const badgeImages: Record<Level, string> = {
+  bronze: bronzeBadge,
+  prata: silverBadge,
+  ouro: goldBadge,
+  platina: platinumBadge,
+};
+
+const glowStyles: Record<Level, { color: string; spread: number }> = {
+  bronze: { color: 'rgba(200, 138, 85, 0.4)', spread: 12 },
+  prata: { color: 'rgba(184, 194, 204, 0.45)', spread: 18 },
+  ouro: { color: 'rgba(214, 169, 79, 0.5)', spread: 24 },
+  platina: { color: 'rgba(159, 196, 218, 0.55)', spread: 32 },
+};
+
+const textColors: Record<Level, string> = {
+  bronze: '#C88A55',
+  prata: '#B8C2CC',
+  ouro: '#D6A94F',
+  platina: '#9FC4DA',
 };
 
 interface LevelBadgeProps {
@@ -46,56 +35,40 @@ interface LevelBadgeProps {
 }
 
 const sizeMap = {
-  sm: { badge: 'h-10 w-10', dot: 'h-10 w-10', fontSize: 'text-[8px]' },
-  md: { badge: 'h-16 w-16', dot: 'h-16 w-16', fontSize: 'text-[10px]' },
-  lg: { badge: 'h-24 w-24', dot: 'h-24 w-24', fontSize: 'text-xs' },
-  xl: { badge: 'h-36 w-36', dot: 'h-36 w-36', fontSize: 'text-sm' },
+  sm: { img: 'h-8 w-8', wrapper: '' },
+  md: { img: 'h-14 w-14', wrapper: '' },
+  lg: { img: 'h-24 w-24', wrapper: '' },
+  xl: { img: 'h-36 w-36', wrapper: '' },
 };
 
 const LevelBadge = ({ level, size = 'sm', showLabel = true }: LevelBadgeProps) => {
-  const style = levelStyles[level];
   const sizes = sizeMap[size];
+  const glow = glowStyles[level];
 
-  // Inline badge: small pill with dot + label
   if (size === 'sm') {
     return (
-      <span
-        className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold"
-        style={{
-          color: style.text,
-          border: `1px solid ${style.border}`,
-          boxShadow: style.shadow,
-        }}
-      >
-        <span
-          className="h-2 w-2 rounded-full"
-          style={{
-            background: style.gradient,
-            boxShadow: `0 0 4px ${style.border}`,
-          }}
-        />
+      <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold"
+        style={{ color: textColors[level], border: `1px solid ${glow.color}`, boxShadow: `0 0 ${glow.spread / 2}px ${glow.color}` }}>
+        <img src={badgeImages[level]} alt={LEVEL_LABELS[level]} className="h-4 w-4 object-contain" />
         {showLabel && LEVEL_LABELS[level]}
       </span>
     );
   }
 
-  // Large badge: circular metal emblem
   return (
     <div className="flex flex-col items-center gap-2">
-      <div
-        className={cn(sizes.badge, 'rounded-full flex items-center justify-center', sizes.fontSize, 'font-bold tracking-wider uppercase')}
-        style={{
-          background: style.gradient,
-          border: `2px solid ${style.border}`,
-          boxShadow: `${style.shadow}, ${style.glow}`,
-          color: 'rgba(255, 255, 255, 0.9)',
-          textShadow: '0 1px 2px rgba(0, 0, 0, 0.4)',
-        }}
-      >
-        {LEVEL_LABELS[level].charAt(0)}
+      <div className="relative flex items-center justify-center">
+        <img
+          src={badgeImages[level]}
+          alt={LEVEL_LABELS[level]}
+          className={cn(sizes.img, 'object-contain relative z-10 drop-shadow-lg')}
+          style={{
+            filter: `drop-shadow(0 0 ${glow.spread}px ${glow.color}) drop-shadow(0 0 ${glow.spread * 1.5}px ${glow.color})`,
+          }}
+        />
       </div>
       {showLabel && (
-        <span className="text-sm font-semibold" style={{ color: style.text }}>
+        <span className="text-sm font-semibold" style={{ color: textColors[level] }}>
           {LEVEL_LABELS[level]}
         </span>
       )}
