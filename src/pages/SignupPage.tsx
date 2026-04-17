@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Loader2, Shield } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,13 +45,13 @@ const SignupPage = () => {
       <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
         <Card className="w-full max-w-sm border-border/50 shadow-lg shadow-black/20">
           <CardContent className="pt-6 text-center space-y-4">
-            <Shield className="w-12 h-12 text-primary mx-auto" />
-            <h2 className="text-xl font-bold text-foreground">Check your email</h2>
+            <img src={logo} alt="Evolve" className="w-16 h-16 object-contain mx-auto" />
+            <h2 className="text-xl font-bold text-foreground">Conta criada!</h2>
             <p className="text-sm text-muted-foreground">
-              We sent a confirmation link to <strong className="text-foreground">{email}</strong>. Click it to activate your account.
+              Sua conta foi criada com sucesso. Faca login para comecar.
             </p>
             <Button variant="outline" className="w-full" onClick={() => navigate("/login")}>
-              Back to Login
+              Ir para Login
             </Button>
           </CardContent>
         </Card>
@@ -61,12 +62,10 @@ const SignupPage = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
       <div className="flex flex-col items-center mb-10">
-        <div className="w-20 h-20 rounded-2xl bg-primary/15 flex items-center justify-center mb-5 ring-1 ring-primary/20">
-          <Shield className="w-10 h-10 text-primary" />
-        </div>
-        <h1 className="text-2xl font-bold text-foreground tracking-tight">Habit Evolution</h1>
+        <img src={logo} alt="Evolve" className="w-24 h-24 object-contain mb-5" />
+        <h1 className="text-2xl font-bold text-foreground tracking-tight">Evolve <span className="text-primary">Ascend</span></h1>
         <p className="text-sm text-muted-foreground mt-1.5 text-center max-w-[260px]">
-          Create your account and start evolving.
+          Crie sua conta e comece a evoluir.
         </p>
       </div>
 
@@ -80,10 +79,10 @@ const SignupPage = () => {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-foreground/80 text-xs font-medium uppercase tracking-wider">Name</Label>
+              <Label htmlFor="name" className="text-foreground/80 text-xs font-medium uppercase tracking-wider">Nome</Label>
               <Input
                 id="name"
-                placeholder="Your name"
+                placeholder="Seu nome"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="h-12 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-primary/40 focus-visible:border-primary/50"
@@ -95,7 +94,7 @@ const SignupPage = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Digite seu email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-12 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-primary/40 focus-visible:border-primary/50"
@@ -103,12 +102,12 @@ const SignupPage = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-foreground/80 text-xs font-medium uppercase tracking-wider">Password</Label>
+              <Label htmlFor="password" className="text-foreground/80 text-xs font-medium uppercase tracking-wider">Senha</Label>
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Min. 6 characters"
+                  placeholder="Minimo 6 caracteres"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="h-12 pr-11 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-primary/40 focus-visible:border-primary/50"
@@ -132,10 +131,10 @@ const SignupPage = () => {
               {isLoading ? (
                 <span className="flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Creating account…
+                  Criando conta...
                 </span>
               ) : (
-                "Create Account"
+                "Criar Conta"
               )}
             </Button>
           </form>
@@ -143,9 +142,9 @@ const SignupPage = () => {
       </Card>
 
       <div className="mt-8 flex items-center gap-1.5 text-sm">
-        <span className="text-muted-foreground">Already have an account?</span>
+        <span className="text-muted-foreground">Ja tem uma conta?</span>
         <button onClick={() => navigate("/login")} className="text-primary font-medium hover:underline underline-offset-2 transition-colors">
-          Log In
+          Entrar
         </button>
       </div>
     </div>

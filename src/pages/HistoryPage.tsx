@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import LevelBadge from '@/components/LevelBadge';
-import { ArrowLeft, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { ArrowLeft, TrendingUp, TrendingDown, Minus, Loader2 } from 'lucide-react';
 import { LEVEL_LABELS } from '@/data/goals';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -15,8 +15,17 @@ const statusConfig = {
 };
 
 const HistoryPage = () => {
-  const { user } = useUserData();
+  const { user, loading } = useUserData();
   const navigate = useNavigate();
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   const history = [...user.weeklyHistory].reverse();
 
   const chartData = user.weeklyHistory.map((w, i) => ({
@@ -26,12 +35,12 @@ const HistoryPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-lg px-4 py-6">
+      <div className="mx-auto max-w-lg px-4 pb-24 pt-6">
         <div className="mb-6 flex items-center gap-3">
           <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-xl font-bold text-foreground">Histórico Semanal</h1>
+          <h1 className="text-xl font-bold text-foreground">Historico Semanal</h1>
         </div>
 
         {history.length === 0 ? (

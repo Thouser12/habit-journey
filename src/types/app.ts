@@ -30,6 +30,7 @@ export interface DoctorConnection {
 
 export interface UserData {
   name: string;
+  avatarUrl: string | null;
   level: Level;
   termsAccepted: boolean;
   currentDay: string;

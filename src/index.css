@@ -7,27 +7,27 @@
 @layer base {
   :root {
     /* Core Neutrals */
-    --background: 216 30% 6%;
-    --foreground: 214 45% 93%;
+    --background: 210 30% 6%;
+    --foreground: 210 40% 93%;
 
-    --card: 216 27% 11%;
-    --card-foreground: 214 45% 93%;
+    --card: 210 27% 10%;
+    --card-foreground: 210 40% 93%;
 
-    --popover: 216 27% 11%;
-    --popover-foreground: 214 45% 93%;
+    --popover: 210 27% 10%;
+    --popover-foreground: 210 40% 93%;
 
-    /* Action */
-    --primary: 215 58% 61%;
+    /* Action - Teal */
+    --primary: 168 64% 40%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 214 25% 16%;
-    --secondary-foreground: 214 45% 93%;
+    --secondary: 210 25% 14%;
+    --secondary-foreground: 210 40% 93%;
 
-    --muted: 214 25% 16%;
-    --muted-foreground: 213 12% 55%;
+    --muted: 210 25% 14%;
+    --muted-foreground: 210 12% 55%;
 
-    --accent: 214 25% 19%;
-    --accent-foreground: 214 45% 93%;
+    --accent: 210 25% 17%;
+    --accent-foreground: 210 40% 93%;
 
     /* Functional */
     --destructive: 0 50% 57%;
@@ -40,9 +40,9 @@
     --warning-foreground: 0 0% 100%;
 
     /* Borders */
-    --border: 214 22% 18%;
-    --input: 214 22% 18%;
-    --ring: 215 58% 61%;
+    --border: 210 22% 16%;
+    --input: 210 22% 16%;
+    --ring: 168 64% 40%;
 
     --radius: 0.75rem;
 
@@ -67,14 +67,14 @@
     --level-platinum-shadow: 203 24% 48%;
 
     /* Sidebar */
-    --sidebar-background: 216 30% 6%;
-    --sidebar-foreground: 214 45% 93%;
-    --sidebar-primary: 215 58% 61%;
+    --sidebar-background: 210 30% 6%;
+    --sidebar-foreground: 210 40% 93%;
+    --sidebar-primary: 168 64% 40%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 214 25% 19%;
-    --sidebar-accent-foreground: 214 45% 93%;
-    --sidebar-border: 214 22% 18%;
-    --sidebar-ring: 215 58% 61%;
+    --sidebar-accent: 210 25% 17%;
+    --sidebar-accent-foreground: 210 40% 93%;
+    --sidebar-border: 210 22% 16%;
+    --sidebar-ring: 168 64% 40%;
   }
 }
 
@@ -86,4 +86,51 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
   }
+}
+
+/* Badge animations */
+.badge-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.badge-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.15) 45%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0.15) 55%,
+    transparent 65%
+  );
+  animation: badge-shimmer-sweep 3s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.badge-glow-gold {
+  filter: drop-shadow(0 0 8px rgba(214, 169, 79, 0.4));
+  animation: badge-gold-pulse 3s ease-in-out infinite;
+}
+
+.badge-glow-platinum {
+  filter: drop-shadow(0 0 12px rgba(159, 196, 218, 0.5));
+  animation: badge-platinum-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes badge-shimmer-sweep {
+  0% { transform: translateX(-150%); }
+  100% { transform: translateX(150%); }
+}
+
+@keyframes badge-gold-pulse {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(214, 169, 79, 0.3)); }
+  50% { filter: drop-shadow(0 0 14px rgba(214, 169, 79, 0.6)); }
+}
+
+@keyframes badge-platinum-pulse {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(159, 196, 218, 0.4)); }
+  50% { filter: drop-shadow(0 0 20px rgba(159, 196, 218, 0.7)); }
 }

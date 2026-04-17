@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Loader2, Shield } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -43,16 +44,14 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
-      {/* Logo / Badge Area */}
+      {/* Logo */}
       <div className="flex flex-col items-center mb-10">
-        <div className="w-20 h-20 rounded-2xl bg-primary/15 flex items-center justify-center mb-5 ring-1 ring-primary/20">
-          <Shield className="w-10 h-10 text-primary" />
-        </div>
+        <img src={logo} alt="Evolve" className="w-24 h-24 object-contain mb-5" />
         <h1 className="text-2xl font-bold text-foreground tracking-tight">
-          Habit Evolution
+          Evolve <span className="text-primary">Ascend</span>
         </h1>
         <p className="text-sm text-muted-foreground mt-1.5 text-center max-w-[260px]">
-          Build discipline through daily progress.
+          Evolua com disciplina, um dia de cada vez.
         </p>
       </div>
 
@@ -60,7 +59,6 @@ const LoginPage = () => {
       <Card className="w-full max-w-sm border-border/50 shadow-lg shadow-black/20">
         <CardContent className="pt-6">
           <form onSubmit={handleLogin} className="space-y-5">
-            {/* Error */}
             {error && (
               <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive">
                 {error}
@@ -75,7 +73,7 @@ const LoginPage = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Digite seu email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onBlur={() => setTouched((t) => ({ ...t, email: true }))}
@@ -84,20 +82,20 @@ const LoginPage = () => {
                 }`}
               />
               {emailError && (
-                <p className="text-xs text-destructive mt-1">Please enter a valid email address.</p>
+                <p className="text-xs text-destructive mt-1">Digite um email valido.</p>
               )}
             </div>
 
-            {/* Password */}
+            {/* Senha */}
             <div className="space-y-2">
               <Label htmlFor="password" className="text-foreground/80 text-xs font-medium uppercase tracking-wider">
-                Password
+                Senha
               </Label>
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder="Digite sua senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onBlur={() => setTouched((t) => ({ ...t, password: true }))}
@@ -115,7 +113,7 @@ const LoginPage = () => {
                 </button>
               </div>
               {passwordError && (
-                <p className="text-xs text-destructive mt-1">Password is required.</p>
+                <p className="text-xs text-destructive mt-1">Senha obrigatoria.</p>
               )}
             </div>
 
@@ -128,10 +126,10 @@ const LoginPage = () => {
               {isLoading ? (
                 <span className="flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Logging in…
+                  Entrando...
                 </span>
               ) : (
-                "Log In"
+                "Entrar"
               )}
             </Button>
 
@@ -141,7 +139,7 @@ const LoginPage = () => {
                 type="button"
                 className="text-xs text-muted-foreground hover:text-primary transition-colors"
               >
-                Forgot password?
+                Esqueceu a senha?
               </button>
             </div>
           </form>
@@ -150,12 +148,12 @@ const LoginPage = () => {
 
       {/* Sign Up */}
       <div className="mt-8 flex items-center gap-1.5 text-sm">
-        <span className="text-muted-foreground">New here?</span>
+        <span className="text-muted-foreground">Novo aqui?</span>
         <button
           onClick={() => navigate("/signup")}
           className="text-primary font-medium hover:underline underline-offset-2 transition-colors"
         >
-          Create Account
+          Criar Conta
         </button>
       </div>
     </div>

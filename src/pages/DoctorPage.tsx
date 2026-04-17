@@ -105,12 +105,12 @@ const DoctorPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-lg px-4 py-6">
+      <div className="mx-auto max-w-lg px-4 pb-24 pt-6">
         <div className="mb-6 flex items-center gap-3">
           <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-xl font-bold text-foreground">Conexão com Médico</h1>
+          <h1 className="text-xl font-bold text-foreground">Conexao com Medico</h1>
         </div>
 
         <Card className="mb-6">
@@ -132,7 +132,7 @@ const DoctorPage = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between rounded-lg border border-border p-4">
                   <div>
-                    <p className="font-medium text-foreground">{conn.doctor_name}</p>
+                    <p className="font-medium text-foreground">Dr. {conn.doctor_name}</p>
                     <p className="text-sm text-muted-foreground">ID: {conn.doctor_id}</p>
                   </div>
                   <Badge variant={statusMap[conn.status as keyof typeof statusMap]?.variant ?? 'secondary'}>
