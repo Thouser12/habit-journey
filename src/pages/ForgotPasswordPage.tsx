@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import logo from '@/assets/logo.png';
 import { supabase } from '@/integrations/supabase/client';
+import { getAppOrigin } from '@/lib/platform';
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const ForgotPasswordPage = () => {
     setLoading(true);
 
     const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${getAppOrigin()}/reset-password`,
     });
 
     if (err) {

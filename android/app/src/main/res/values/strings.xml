@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Uberlingen</string>
+    <string name="title_activity_main">Uberlingen</string>
+    <string name="package_name">app.uberlingen.patient</string>
+    <string name="custom_url_scheme">app.uberlingen.patient</string>
+</resources>
