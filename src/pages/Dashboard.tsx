@@ -21,11 +21,27 @@ const Dashboard = () => {
   const todayDone = user.goals.filter(g => g.completed).length;
   const currentStreak = todayDone > 0 ? streakCount + 1 : streakCount;
   const totalDays = user.dailyRecords.length + 1;
+
+  const isPerfectDay = (goals: { completed: boolean }[]) => goals.length > 0 && goals.every(g => g.completed);
+  const hasAnyPerfectDay = isPerfectDay(user.goals) || user.dailyRecords.some(r => isPerfectDay(r.goals));
+
+  const sortedDesc = [...user.dailyRecords].sort((a, b) => b.date.localeCompare(a.date));
+  let perfectStreak = 0;
+  if (isPerfectDay(user.goals)) {
+    perfectStreak = 1;
+    for (const r of sortedDesc) {
+      if (isPerfectDay(r.goals)) perfectStreak++;
+      else break;
+    }
+  }
+
   const achievementList = [
     { id: 'first-day', title: 'Primeiro Dia', description: '', unlocked: totalDays >= 1 && todayDone > 0 },
     { id: 'streak-3', title: '3 Dias Seguidos', description: '', unlocked: currentStreak >= 3 },
-    { id: 'streak-7', title: 'Semana Perfeita', description: '', unlocked: currentStreak >= 7 },
-    { id: 'level-up', title: 'Primeira Promoção', description: '', unlocked: user.weeklyHistory.some(w => w.status === 'promoted') },
+    { id: 'streak-7', title: 'Semana Completa', description: '', unlocked: currentStreak >= 7 },
+    { id: 'perfect-day', title: 'Dia Perfeito', description: '', unlocked: hasAnyPerfectDay },
+    { id: 'perfect-week', title: 'Semana Perfeita', description: '', unlocked: perfectStreak >= 7 },
+    { id: 'level-up', title: 'Rank Up', description: '', unlocked: user.weeklyHistory.some(w => w.status === 'promoted') },
     { id: 'month', title: '30 Dias', description: '', unlocked: totalDays >= 30 },
     { id: 'doctor', title: 'Acompanhamento', description: '', unlocked: user.doctorConnection?.status === 'accepted' },
   ];

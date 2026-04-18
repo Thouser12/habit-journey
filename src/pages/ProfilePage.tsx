@@ -9,17 +9,19 @@ import LevelBadge from '@/components/LevelBadge';
 import { ProfileEditModal } from '@/components/ProfileEditModal';
 import { MonthCalendar } from '@/components/MonthCalendar';
 import { notifyAchievementsSeen } from '@/hooks/useUnseenAchievements';
-import { ArrowLeft, Flame, Target, Award, Calendar, Zap, Heart, LogOut, Pencil, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Flame, Target, Award, Calendar, Zap, Heart, LogOut, Pencil, TrendingUp, Star, Crown } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 
 const achievements = [
-  { id: 'first-day', title: 'Primeiro Dia', description: 'Completou metas pela primeira vez', icon: Target },
+  { id: 'first-day', title: 'Primeiro Dia', description: 'Completou uma meta pela primeira vez', icon: Target },
   { id: 'streak-3', title: '3 Dias Seguidos', description: 'Manteve streak de 3 dias', icon: Flame },
-  { id: 'streak-7', title: 'Semana Perfeita', description: 'Completou 100% em 7 dias seguidos', icon: Zap },
-  { id: 'level-up', title: 'Primeira Promoção', description: 'Subiu de nível pela primeira vez', icon: Award },
+  { id: 'streak-7', title: 'Semana Completa', description: '7 dias consecutivos ativos', icon: Zap },
+  { id: 'perfect-day', title: 'Dia Perfeito', description: '100% das metas em um único dia', icon: Star },
+  { id: 'perfect-week', title: 'Semana Perfeita', description: '100% das metas por 7 dias seguidos', icon: Crown },
+  { id: 'level-up', title: 'Rank Up', description: 'Subiu de nível pela primeira vez', icon: Award },
   { id: 'month', title: '30 Dias', description: 'Usou o app por 30 dias', icon: Calendar },
   { id: 'doctor', title: 'Acompanhamento', description: 'Vinculou-se a um médico', icon: Heart },
 ];
@@ -102,6 +104,28 @@ const ProfilePage = () => {
     }
   }
 
+  // Helpers for new achievements
+  const isPerfectDay = (goals: { completed: boolean }[]) =>
+    goals.length > 0 && goals.every(g => g.completed);
+
+  const hasAnyPerfectDay =
+    isPerfectDay(user.goals) || user.dailyRecords.some(r => isPerfectDay(r.goals));
+
+  // Longest perfect-streak (consecutive days with 100% completion, including today if complete)
+  const sortedByDateDesc = [...user.dailyRecords].sort((a, b) => b.date.localeCompare(a.date));
+  let perfectStreak = 0;
+  let counting = true;
+  if (user.goals.length > 0 && user.goals.every(g => g.completed)) {
+    perfectStreak = 1;
+  } else {
+    counting = false;
+  }
+  for (const r of sortedByDateDesc) {
+    if (!counting) break;
+    if (isPerfectDay(r.goals)) perfectStreak++;
+    else break;
+  }
+
   // Unlock logic + progress (0-100)
   const unlockedAchievements = achievements.map(a => {
     let unlocked = false;
@@ -111,7 +135,7 @@ const ProfilePage = () => {
     if (a.id === 'first-day') {
       unlocked = totalDays >= 1 && todayCompleted > 0;
       progress = unlocked ? 100 : Math.min(100, (todayCompleted / 1) * 100);
-      progressLabel = unlocked ? 'Concluído' : `${todayCompleted}/1 meta hoje`;
+      progressLabel = unlocked ? 'Concluído' : `${todayCompleted}/1 meta`;
     }
     if (a.id === 'streak-3') {
       unlocked = currentStreak >= 3;
@@ -122,6 +146,17 @@ const ProfilePage = () => {
       unlocked = currentStreak >= 7;
       progress = Math.min(100, (currentStreak / 7) * 100);
       progressLabel = `${Math.min(currentStreak, 7)}/7 dias`;
+    }
+    if (a.id === 'perfect-day') {
+      unlocked = hasAnyPerfectDay;
+      const todayPct = user.goals.length > 0 ? (todayCompleted / user.goals.length) * 100 : 0;
+      progress = unlocked ? 100 : todayPct;
+      progressLabel = unlocked ? 'Concluído' : `${Math.round(todayPct)}% hoje`;
+    }
+    if (a.id === 'perfect-week') {
+      unlocked = perfectStreak >= 7;
+      progress = Math.min(100, (perfectStreak / 7) * 100);
+      progressLabel = `${Math.min(perfectStreak, 7)}/7 dias 100%`;
     }
     if (a.id === 'level-up') {
       unlocked = user.weeklyHistory.some(w => w.status === 'promoted');
@@ -136,7 +171,7 @@ const ProfilePage = () => {
     if (a.id === 'doctor') {
       unlocked = user.doctorConnection?.status === 'accepted';
       progress = unlocked ? 100 : 0;
-      progressLabel = unlocked ? 'Vinculado' : 'Vincule-se a um médico';
+      progressLabel = unlocked ? 'Vinculado' : 'Vincule-se';
     }
 
     return { ...a, unlocked, progress, progressLabel };
@@ -210,36 +245,47 @@ const ProfilePage = () => {
         {/* Achievements */}
         <Card className="mb-6">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Conquistas</CardTitle>
+            <CardTitle className="flex items-center justify-between text-base">
+              <span>Conquistas</span>
+              <span className="text-xs font-normal text-muted-foreground">
+                {unlockedCount}/{achievements.length}
+              </span>
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
-            {unlockedAchievements.map(a => {
-              const Icon = a.icon;
-              return (
-                <div
-                  key={a.id}
-                  className={`flex items-center gap-3 rounded-lg border p-3 transition-all ${
-                    a.unlocked ? 'border-primary/30 bg-primary/5' : 'border-border'
-                  }`}
-                >
-                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
-                    a.unlocked ? 'bg-primary/20' : 'bg-muted'
-                  }`}>
-                    <Icon className={`h-5 w-5 ${a.unlocked ? 'text-primary' : 'text-muted-foreground'}`} />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className={`text-sm font-medium ${a.unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>{a.title}</p>
-                      <span className={`shrink-0 text-[10px] font-semibold ${a.unlocked ? 'text-primary' : 'text-muted-foreground'}`}>
-                        {a.progressLabel}
-                      </span>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-3">
+              {unlockedAchievements.map(a => {
+                const Icon = a.icon;
+                return (
+                  <div
+                    key={a.id}
+                    className={`flex flex-col items-center gap-2 rounded-lg border p-3 text-center transition-all ${
+                      a.unlocked ? 'border-primary/30 bg-primary/5' : 'border-border'
+                    }`}
+                  >
+                    <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${
+                      a.unlocked ? 'bg-primary/20' : 'bg-muted'
+                    }`}>
+                      <Icon className={`h-6 w-6 ${a.unlocked ? 'text-primary' : 'text-muted-foreground'}`} />
                     </div>
-                    <p className="mb-1.5 text-xs text-muted-foreground">{a.description}</p>
-                    <Progress value={a.progress} className="h-1.5" />
+                    <div className="w-full min-w-0">
+                      <p className={`truncate text-xs font-semibold ${a.unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
+                        {a.title}
+                      </p>
+                      <p className="mt-0.5 line-clamp-2 text-[10px] leading-tight text-muted-foreground">
+                        {a.description}
+                      </p>
+                    </div>
+                    <div className="w-full">
+                      <Progress value={a.progress} className="h-1" />
+                      <p className={`mt-1 text-[10px] font-semibold ${a.unlocked ? 'text-primary' : 'text-muted-foreground'}`}>
+                        {a.progressLabel}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </CardContent>
         </Card>
 
@@ -347,30 +393,34 @@ const ProfilePage = () => {
               <TrendingUp className="h-4 w-4" />
               {unlockedCount} de {achievements.length} desbloqueadas
             </div>
-            <div className="space-y-2 max-h-[400px] overflow-y-auto">
+            <div className="grid grid-cols-2 gap-3 max-h-[400px] overflow-y-auto">
               {unlockedAchievements.map(a => {
                 const Icon = a.icon;
                 return (
                   <div
                     key={a.id}
-                    className={`flex items-center gap-3 rounded-lg border p-3 ${
+                    className={`flex flex-col items-center gap-2 rounded-lg border p-3 text-center ${
                       a.unlocked ? 'border-primary/30 bg-primary/5' : 'border-border'
                     }`}
                   >
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+                    <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${
                       a.unlocked ? 'bg-primary/20' : 'bg-muted'
                     }`}>
-                      <Icon className={`h-5 w-5 ${a.unlocked ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <Icon className={`h-6 w-6 ${a.unlocked ? 'text-primary' : 'text-muted-foreground'}`} />
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-2">
-                        <p className={`text-sm font-medium ${a.unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>{a.title}</p>
-                        <span className={`shrink-0 text-[10px] font-semibold ${a.unlocked ? 'text-primary' : 'text-muted-foreground'}`}>
-                          {a.progressLabel}
-                        </span>
-                      </div>
-                      <p className="mb-1.5 text-xs text-muted-foreground">{a.description}</p>
-                      <Progress value={a.progress} className="h-1.5" />
+                    <div className="w-full min-w-0">
+                      <p className={`truncate text-xs font-semibold ${a.unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
+                        {a.title}
+                      </p>
+                      <p className="mt-0.5 line-clamp-2 text-[10px] leading-tight text-muted-foreground">
+                        {a.description}
+                      </p>
+                    </div>
+                    <div className="w-full">
+                      <Progress value={a.progress} className="h-1" />
+                      <p className={`mt-1 text-[10px] font-semibold ${a.unlocked ? 'text-primary' : 'text-muted-foreground'}`}>
+                        {a.progressLabel}
+                      </p>
                     </div>
                   </div>
                 );

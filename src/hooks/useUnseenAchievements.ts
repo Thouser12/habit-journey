@@ -74,10 +74,27 @@ export function useUnseenAchievements() {
         }
         const currentStreak = streak;
 
+        const isPerfectDay = (goals: { completed: boolean }[]) => goals.length > 0 && goals.every(g => g.completed);
+        const todayRec = records.find(r => r.record_date === today);
+        const todayGoals = (todayRec?.goals as { completed: boolean }[] | undefined) ?? [];
+        const hasAnyPerfectDay = isPerfectDay(todayGoals) || records.some(r => isPerfectDay((r.goals as { completed: boolean }[]) ?? []));
+
+        let perfectStreak = 0;
+        if (isPerfectDay(todayGoals)) {
+          perfectStreak = 1;
+          for (const r of sorted) {
+            if (r.record_date === today) continue;
+            if (isPerfectDay((r.goals as { completed: boolean }[]) ?? [])) perfectStreak++;
+            else break;
+          }
+        }
+
         const unlockedIds: string[] = [];
         if (totalDays >= 1 && todayDone > 0) unlockedIds.push('first-day');
         if (currentStreak >= 3) unlockedIds.push('streak-3');
         if (currentStreak >= 7) unlockedIds.push('streak-7');
+        if (hasAnyPerfectDay) unlockedIds.push('perfect-day');
+        if (perfectStreak >= 7) unlockedIds.push('perfect-week');
         if ((summariesRes.data ?? []).some(s => s.status === 'promoted')) unlockedIds.push('level-up');
         if (totalDays >= 30) unlockedIds.push('month');
         if (connRes.data?.status === 'accepted') unlockedIds.push('doctor');
