@@ -15,40 +15,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const WRONG_ROLE_ERROR = 'Esta conta e de medico. Use o app do medico.';
 
-/** Returns true if this account is allowed on the patient app. Permissive on errors. */
-async function isPatientAccount(userId: string): Promise<boolean> {
-  try {
-    const { data } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', userId)
-      .maybeSingle();
-    // Block only if explicitly tagged as doctor
-    return data?.role !== 'doctor';
-  } catch {
-    return true;
-  }
-}
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
       setLoading(false);
-
-      // Validate role in background; sign out if not allowed
-      if (newSession?.user) {
-        isPatientAccount(newSession.user.id).then(ok => {
-          if (!ok) supabase.auth.signOut();
-        });
-      }
     });
 
-    supabase.auth.getSession().then(({ data: { session: current } }) => {
-      setSession(current);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
       setLoading(false);
     });
 
@@ -71,11 +49,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { error: error.message };
 
+    // Validate role after successful sign-in (blocking only this operation, not app load)
     if (data.user) {
-      const ok = await isPatientAccount(data.user.id);
-      if (!ok) {
-        await supabase.auth.signOut();
-        return { error: WRONG_ROLE_ERROR };
+      try {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', data.user.id)
+          .maybeSingle();
+        if (profile?.role === 'doctor') {
+          await supabase.auth.signOut();
+          return { error: WRONG_ROLE_ERROR };
+        }
+      } catch {
+        // Permissive on validation errors
       }
     }
 
