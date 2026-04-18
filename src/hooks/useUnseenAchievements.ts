@@ -3,6 +3,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { format, subDays } from 'date-fns';
 
+const ACHIEVEMENTS_SEEN_EVENT = 'patient-achievements-seen';
+
+export function notifyAchievementsSeen() {
+  window.dispatchEvent(new CustomEvent(ACHIEVEMENTS_SEEN_EVENT));
+}
+
 /**
  * Light-weight hook that counts unseen achievements.
  * Does NOT use useUserData to avoid duplicate heavy fetches in BottomNav.
@@ -10,6 +16,13 @@ import { format, subDays } from 'date-fns';
 export function useUnseenAchievements() {
   const { user: authUser } = useAuth();
   const [count, setCount] = useState(0);
+  const [refreshToken, setRefreshToken] = useState(0);
+
+  useEffect(() => {
+    const handler = () => setRefreshToken(t => t + 1);
+    window.addEventListener(ACHIEVEMENTS_SEEN_EVENT, handler);
+    return () => window.removeEventListener(ACHIEVEMENTS_SEEN_EVENT, handler);
+  }, []);
 
   useEffect(() => {
     if (!authUser) return;
@@ -82,7 +95,7 @@ export function useUnseenAchievements() {
     return () => {
       cancelled = true;
     };
-  }, [authUser]);
+  }, [authUser, refreshToken]);
 
   return { count };
 }

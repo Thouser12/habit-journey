@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import LevelBadge from '@/components/LevelBadge';
 import { ProfileEditModal } from '@/components/ProfileEditModal';
 import { MonthCalendar } from '@/components/MonthCalendar';
+import { notifyAchievementsSeen } from '@/hooks/useUnseenAchievements';
 import { ArrowLeft, Flame, Target, Award, Calendar, Zap, Heart, LogOut, Pencil, TrendingUp } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEffect, useState } from 'react';
@@ -50,7 +51,9 @@ const ProfilePage = () => {
     if (!authUser) return;
     const unlocked = unlockedAchievements.filter(a => a.unlocked).map(a => a.id);
     if (unlocked.length === 0) return;
-    supabase.from('profiles').update({ achievements_seen: unlocked }).eq('id', authUser.id).then();
+    supabase.from('profiles').update({ achievements_seen: unlocked }).eq('id', authUser.id).then(() => {
+      notifyAchievementsSeen();
+    });
   }, [authUser, user.dailyRecords.length, user.weeklyHistory.length]);
 
   const displayName = profileName || user.name;
