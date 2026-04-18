@@ -15,7 +15,7 @@ workflows:
         APP_STORE_APPLE_ID: 6762501382
         VITE_SUPABASE_URL: "https://cvegqdvpogmntygdjjvi.supabase.co"
         VITE_SUPABASE_PUBLISHABLE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2ZWdxZHZwb2dtbnR5Z2RqanZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMjQ0MzcsImV4cCI6MjA4ODYwMDQzN30.SiyH5cuKWild1qxTcbr4h34M_Z-JiaS_iceeaA9HgQY"
-      node: 20
+      node: 22
       xcode: latest
       cocoapods: default
     triggering:
@@ -69,7 +69,7 @@ workflows:
         PACKAGE_NAME: "app.uberlingen.patient"
         VITE_SUPABASE_URL: "https://cvegqdvpogmntygdjjvi.supabase.co"
         VITE_SUPABASE_PUBLISHABLE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2ZWdxZHZwb2dtbnR5Z2RqanZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMjQ0MzcsImV4cCI6MjA4ODYwMDQzN30.SiyH5cuKWild1qxTcbr4h34M_Z-JiaS_iceeaA9HgQY"
-      node: 20
+      node: 22
     triggering:
       events: [push, tag]
       branch_patterns:
