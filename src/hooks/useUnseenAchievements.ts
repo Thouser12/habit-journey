@@ -75,8 +75,6 @@ export function useUnseenAchievements() {
         const currentStreak = streak;
 
         const isPerfectDay = (goals: { completed: boolean }[]) => goals.length > 0 && goals.every(g => g.completed);
-        const todayRec = records.find(r => r.record_date === today);
-        const todayGoals = (todayRec?.goals as { completed: boolean }[] | undefined) ?? [];
         const hasAnyPerfectDay = isPerfectDay(todayGoals) || records.some(r => isPerfectDay((r.goals as { completed: boolean }[]) ?? []));
 
         let perfectStreak = 0;
