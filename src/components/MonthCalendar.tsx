@@ -53,7 +53,7 @@ export function MonthCalendar({
         <button
           onClick={() => setMonth(addMonths(month, 1))}
           className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent"
-          aria-label="Proximo mes"
+          aria-label="Próximo mes"
         >
           <ChevronRight className="h-4 w-4" />
         </button>

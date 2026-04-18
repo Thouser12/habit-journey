@@ -60,7 +60,7 @@ export function LevelUpModal({ open, onClose, fromLevel, toLevel }: LevelUpModal
         <div className="flex flex-col items-center gap-6 py-6 text-center">
           <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-primary">
             <Sparkles className="h-4 w-4" />
-            Parabens!
+            Parabéns!
             <Sparkles className="h-4 w-4" />
           </div>
 
@@ -69,9 +69,9 @@ export function LevelUpModal({ open, onClose, fromLevel, toLevel }: LevelUpModal
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold text-foreground">Voce subiu de nivel!</h2>
+            <h2 className="text-2xl font-bold text-foreground">Você subiu de nível!</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Voce evoluiu de <strong className="text-foreground">{LEVEL_LABELS[fromLevel]}</strong> para <strong className="text-primary">{LEVEL_LABELS[toLevel]}</strong>
+              Você evoluiu de <strong className="text-foreground">{LEVEL_LABELS[fromLevel]}</strong> para <strong className="text-primary">{LEVEL_LABELS[toLevel]}</strong>
             </p>
           </div>
 

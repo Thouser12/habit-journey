@@ -40,7 +40,7 @@ const HistoryPage = () => {
           <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-xl font-bold text-foreground">Historico Semanal</h1>
+          <h1 className="text-xl font-bold text-foreground">Histórico Semanal</h1>
         </div>
 
         {history.length === 0 ? (

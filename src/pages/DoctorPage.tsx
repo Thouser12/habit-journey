@@ -65,7 +65,7 @@ const DoctorPage = () => {
       .maybeSingle();
 
     if (lookupError || !doctor) {
-      toast({ title: 'Erro', description: 'Codigo de medico nao encontrado. Verifique e tente novamente.', variant: 'destructive' });
+      toast({ title: 'Erro', description: 'Código de médico não encontrado. Verifique e tente novamente.', variant: 'destructive' });
       setSubmitting(false);
       return;
     }
@@ -110,7 +110,7 @@ const DoctorPage = () => {
           <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-xl font-bold text-foreground">Conexao com Medico</h1>
+          <h1 className="text-xl font-bold text-foreground">Conexão com Médico</h1>
         </div>
 
         <Card className="mb-6">

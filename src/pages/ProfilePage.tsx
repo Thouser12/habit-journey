@@ -19,9 +19,9 @@ const achievements = [
   { id: 'first-day', title: 'Primeiro Dia', description: 'Completou metas pela primeira vez', icon: Target },
   { id: 'streak-3', title: '3 Dias Seguidos', description: 'Manteve streak de 3 dias', icon: Flame },
   { id: 'streak-7', title: 'Semana Perfeita', description: 'Completou 100% em 7 dias seguidos', icon: Zap },
-  { id: 'level-up', title: 'Primeira Promocao', description: 'Subiu de nivel pela primeira vez', icon: Award },
+  { id: 'level-up', title: 'Primeira Promoção', description: 'Subiu de nível pela primeira vez', icon: Award },
   { id: 'month', title: '30 Dias', description: 'Usou o app por 30 dias', icon: Calendar },
-  { id: 'doctor', title: 'Acompanhamento', description: 'Vinculou-se a um medico', icon: Heart },
+  { id: 'doctor', title: 'Acompanhamento', description: 'Vinculou-se a um médico', icon: Heart },
 ];
 
 const ProfilePage = () => {
@@ -111,7 +111,7 @@ const ProfilePage = () => {
     if (a.id === 'first-day') {
       unlocked = totalDays >= 1 && todayCompleted > 0;
       progress = unlocked ? 100 : Math.min(100, (todayCompleted / 1) * 100);
-      progressLabel = unlocked ? 'Concluido' : `${todayCompleted}/1 meta hoje`;
+      progressLabel = unlocked ? 'Concluído' : `${todayCompleted}/1 meta hoje`;
     }
     if (a.id === 'streak-3') {
       unlocked = currentStreak >= 3;
@@ -126,7 +126,7 @@ const ProfilePage = () => {
     if (a.id === 'level-up') {
       unlocked = user.weeklyHistory.some(w => w.status === 'promoted');
       progress = unlocked ? 100 : 0;
-      progressLabel = unlocked ? 'Concluido' : 'Suba de nivel';
+      progressLabel = unlocked ? 'Concluído' : 'Suba de nível';
     }
     if (a.id === 'month') {
       unlocked = totalDays >= 30;
@@ -136,7 +136,7 @@ const ProfilePage = () => {
     if (a.id === 'doctor') {
       unlocked = user.doctorConnection?.status === 'accepted';
       progress = unlocked ? 100 : 0;
-      progressLabel = unlocked ? 'Vinculado' : 'Vincule-se a um medico';
+      progressLabel = unlocked ? 'Vinculado' : 'Vincule-se a um médico';
     }
 
     return { ...a, unlocked, progress, progressLabel };

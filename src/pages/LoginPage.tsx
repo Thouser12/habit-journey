@@ -113,7 +113,7 @@ const LoginPage = () => {
                 </button>
               </div>
               {passwordError && (
-                <p className="text-xs text-destructive mt-1">Senha obrigatoria.</p>
+                <p className="text-xs text-destructive mt-1">Senha obrigatória.</p>
               )}
             </div>
 

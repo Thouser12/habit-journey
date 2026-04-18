@@ -25,7 +25,7 @@ const Dashboard = () => {
     { id: 'first-day', title: 'Primeiro Dia', description: '', unlocked: totalDays >= 1 && todayDone > 0 },
     { id: 'streak-3', title: '3 Dias Seguidos', description: '', unlocked: currentStreak >= 3 },
     { id: 'streak-7', title: 'Semana Perfeita', description: '', unlocked: currentStreak >= 7 },
-    { id: 'level-up', title: 'Primeira Promocao', description: '', unlocked: user.weeklyHistory.some(w => w.status === 'promoted') },
+    { id: 'level-up', title: 'Primeira Promoção', description: '', unlocked: user.weeklyHistory.some(w => w.status === 'promoted') },
     { id: 'month', title: '30 Dias', description: '', unlocked: totalDays >= 30 },
     { id: 'doctor', title: 'Acompanhamento', description: '', unlocked: user.doctorConnection?.status === 'accepted' },
   ];
@@ -61,7 +61,7 @@ const Dashboard = () => {
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Ola, {user.name || 'Paciente'}</h1>
+              <h1 className="text-2xl font-bold text-foreground">Olá, {user.name || 'Paciente'}</h1>
               <p className="text-sm text-muted-foreground">Vamos evoluir hoje!</p>
             </div>
             <button onClick={() => navigate('/nivel')} className="transition-transform hover:scale-105">
@@ -91,7 +91,7 @@ const Dashboard = () => {
                 {weeklyProgress >= 70 ? (
                   <>
                     <TrendingUp className="h-3.5 w-3.5 text-success" />
-                    <span className="text-success">No ritmo para subir de nivel!</span>
+                    <span className="text-success">No ritmo para subir de nível!</span>
                   </>
                 ) : weeklyProgress <= 30 ? (
                   <>
@@ -101,7 +101,7 @@ const Dashboard = () => {
                 ) : (
                   <>
                     <Minus className="h-3.5 w-3.5 text-warning" />
-                    <span className="text-warning">Zona de manutencao</span>
+                    <span className="text-warning">Zona de manutenção</span>
                   </>
                 )}
               </div>
@@ -143,8 +143,8 @@ const Dashboard = () => {
           {allDone && (
             <div className="flex flex-col items-center gap-2 rounded-xl border border-success/20 bg-success/5 p-6 text-center">
               <Sparkles className="h-10 w-10 text-success" />
-              <p className="text-lg font-bold text-foreground">Parabens!</p>
-              <p className="text-sm text-muted-foreground">Todas as metas de hoje foram concluidas!</p>
+              <p className="text-lg font-bold text-foreground">Parabéns!</p>
+              <p className="text-sm text-muted-foreground">Todas as metas de hoje foram concluídas!</p>
             </div>
           )}
         </div>

@@ -54,13 +54,13 @@ const ChatPage = () => {
             <CardContent className="flex flex-col items-center gap-4 py-12 text-center">
               <MessageCircle className="h-12 w-12 text-muted-foreground" />
               <div>
-                <p className="font-medium text-foreground">Nenhum medico vinculado</p>
+                <p className="font-medium text-foreground">Nenhum médico vinculado</p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Vincule-se a um medico para iniciar uma conversa.
+                  Vincule-se a um médico para iniciar uma conversa.
                 </p>
               </div>
               <Button variant="outline" onClick={() => navigate('/medico')}>
-                Vincular Medico
+                Vincular Médico
               </Button>
             </CardContent>
           </Card>
@@ -77,7 +77,7 @@ const ChatPage = () => {
           <ArrowLeft className="h-5 w-5" />
         </button>
         <Avatar className="h-8 w-8">
-          <AvatarImage src={doctorAvatar ?? undefined} alt={doctorName ?? 'Medico'} />
+          <AvatarImage src={doctorAvatar ?? undefined} alt={doctorName ?? 'Médico'} />
           <AvatarFallback className="bg-primary/10 text-sm font-bold text-primary">
             {doctorName?.charAt(0) ?? 'D'}
           </AvatarFallback>
@@ -89,7 +89,7 @@ const ChatPage = () => {
       <div className="flex-1 space-y-3 overflow-y-auto px-4 pb-36 pt-4">
         {messages.length === 0 && (
           <p className="py-10 text-center text-sm text-muted-foreground">
-            Nenhuma mensagem ainda. Diga ola!
+            Nenhuma mensagem ainda. Diga olá!
           </p>
         )}
         {messages.map(msg => {
@@ -98,7 +98,7 @@ const ChatPage = () => {
             <div key={msg.id} className={`flex items-end gap-2 ${isPatient ? 'justify-end' : 'justify-start'}`}>
               {!isPatient && (
                 <Avatar className="h-7 w-7 shrink-0">
-                  <AvatarImage src={doctorAvatar ?? undefined} alt={doctorName ?? 'Medico'} />
+                  <AvatarImage src={doctorAvatar ?? undefined} alt={doctorName ?? 'Médico'} />
                   <AvatarFallback className="bg-primary/10 text-[10px] font-bold text-primary">
                     {doctorName?.charAt(0) ?? 'D'}
                   </AvatarFallback>

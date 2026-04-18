@@ -10,10 +10,10 @@ import { Level } from '@/types/app';
 import { differenceInDays, parseISO } from 'date-fns';
 
 const levelDescriptions: Record<Level, string> = {
-  bronze: 'Voce esta comecando sua jornada. Foque em criar habitos basicos e construir consistencia.',
-  prata: 'Parabens pela evolucao! Agora seus desafios sao mais intensos para consolidar sua disciplina.',
-  ouro: 'Nivel avancado! Suas metas exigem comprometimento real e mudanca profunda de habitos.',
-  platina: 'Elite! Voce domina a arte da disciplina. Mantenha a excelencia e inspire outros.',
+  bronze: 'Você esta começando sua jornada. Foque em criar hábitos básicos e construir consistência.',
+  prata: 'Parabéns pela evolução! Agora seus desafios sao mais intensos para consolidar sua disciplina.',
+  ouro: 'Nível avançado! Suas metas exigem comprometimento real e mudança profunda de hábitos.',
+  platina: 'Elite! Você domina a arte da disciplina. Mantenha a excelência e inspire outros.',
 };
 
 const LevelPage = () => {
@@ -40,7 +40,7 @@ const LevelPage = () => {
       statusColor = 'text-success';
       StatusIcon = TrendingUp;
     } else {
-      statusText = 'Nivel maximo! Mantenha acima de 30% para nao cair.';
+      statusText = 'Nível máximo! Mantenha acima de 30% para não cair.';
       statusColor = 'text-success';
       StatusIcon = TrendingUp;
     }
@@ -50,12 +50,12 @@ const LevelPage = () => {
       statusColor = 'text-destructive';
       StatusIcon = TrendingDown;
     } else {
-      statusText = 'Voce esta no nivel inicial, sem riscos.';
+      statusText = 'Você está no nível inicial, sem riscos.';
       statusColor = 'text-muted-foreground';
       StatusIcon = Minus;
     }
   } else {
-    statusText = 'Zona de manutencao. Mantenha o ritmo ou acelere pra subir.';
+    statusText = 'Zona de manutenção. Mantenha o ritmo ou acelere pra subir.';
     statusColor = 'text-warning';
     StatusIcon = Minus;
   }
@@ -69,7 +69,7 @@ const LevelPage = () => {
           <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-xl font-bold text-foreground">Meu Nivel</h1>
+          <h1 className="text-xl font-bold text-foreground">Meu Nível</h1>
         </div>
 
         {/* Current level */}
@@ -106,7 +106,7 @@ const LevelPage = () => {
 
             {nextLevel && weeklyProgress < 70 && (
               <div className="rounded-lg border border-border bg-accent/40 p-3 text-xs text-muted-foreground">
-                Voce precisa de mais <strong className="text-foreground">{percentNeededToPromote}%</strong> para subir pra <strong className="text-foreground">{LEVEL_LABELS[nextLevel]}</strong>.
+                Você precisa de mais <strong className="text-foreground">{percentNeededToPromote}%</strong> para subir pra <strong className="text-foreground">{LEVEL_LABELS[nextLevel]}</strong>.
               </div>
             )}
 
@@ -127,21 +127,21 @@ const LevelPage = () => {
           <CardContent className="space-y-2 text-sm">
             <div className="flex items-start gap-2">
               <TrendingUp className="mt-0.5 h-4 w-4 shrink-0 text-success" />
-              <p className="text-muted-foreground"><strong className="text-foreground">70% ou mais</strong> no fim da semana: sobe de nivel</p>
+              <p className="text-muted-foreground"><strong className="text-foreground">70% ou mais</strong> no fim da semana: sobe de nível</p>
             </div>
             <div className="flex items-start gap-2">
               <Minus className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
-              <p className="text-muted-foreground"><strong className="text-foreground">30% a 70%</strong>: mantem o nivel</p>
+              <p className="text-muted-foreground"><strong className="text-foreground">30% a 70%</strong>: mantém o nível</p>
             </div>
             <div className="flex items-start gap-2">
               <TrendingDown className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
-              <p className="text-muted-foreground"><strong className="text-foreground">30% ou menos</strong>: cai um nivel</p>
+              <p className="text-muted-foreground"><strong className="text-foreground">30% ou menos</strong>: cai um nível</p>
             </div>
           </CardContent>
         </Card>
 
         {/* All levels */}
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Todos os Niveis</h2>
+        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Todos os Níveis</h2>
         <div className="space-y-3">
           {LEVEL_ORDER.map((level, idx) => {
             const isCurrent = level === user.level;
@@ -156,7 +156,7 @@ const LevelPage = () => {
                   <div className="flex-1">
                     <p className="font-semibold text-foreground">{LEVEL_LABELS[level]}</p>
                     <p className="text-xs text-muted-foreground">
-                      {isCurrent ? 'Nivel atual' : isLocked ? 'Bloqueado' : 'Concluido'}
+                      {isCurrent ? 'Nível atual' : isLocked ? 'Bloqueado' : 'Concluído'}
                     </p>
                   </div>
                   {isCurrent && (

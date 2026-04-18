@@ -13,7 +13,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const WRONG_ROLE_ERROR = 'Esta conta e de medico. Use o app do medico.';
+const WRONG_ROLE_ERROR = 'Esta conta é de médico. Use o app do médico.';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);

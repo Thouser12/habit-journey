@@ -48,7 +48,7 @@ const SignupPage = () => {
             <img src={logo} alt="Uberlingen" className="w-16 h-16 object-contain mx-auto" />
             <h2 className="text-xl font-bold text-foreground">Conta criada!</h2>
             <p className="text-sm text-muted-foreground">
-              Sua conta foi criada com sucesso. Faca login para comecar.
+              Sua conta foi criada com sucesso. Faça login para começar.
             </p>
             <Button variant="outline" className="w-full" onClick={() => navigate("/login")}>
               Ir para Login
@@ -107,7 +107,7 @@ const SignupPage = () => {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Minimo 6 caracteres"
+                  placeholder="Mínimo 6 caracteres"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="h-12 pr-11 bg-background border-border/60 text-foreground placeholder:text-muted-foreground/50 transition-shadow focus-visible:ring-primary/40 focus-visible:border-primary/50"
@@ -142,7 +142,7 @@ const SignupPage = () => {
       </Card>
 
       <div className="mt-8 flex items-center gap-1.5 text-sm">
-        <span className="text-muted-foreground">Ja tem uma conta?</span>
+        <span className="text-muted-foreground">Já tem uma conta?</span>
         <button onClick={() => navigate("/login")} className="text-primary font-medium hover:underline underline-offset-2 transition-colors">
           Entrar
         </button>

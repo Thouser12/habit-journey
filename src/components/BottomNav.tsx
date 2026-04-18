@@ -4,9 +4,9 @@ import { useUnreadMessages } from '@/hooks/useUnreadMessages';
 import { useUnseenAchievements } from '@/hooks/useUnseenAchievements';
 
 const tabs = [
-  { path: '/', label: 'Inicio', icon: LayoutDashboard },
-  { path: '/historico', label: 'Historico', icon: History },
-  { path: '/medico', label: 'Medico', icon: Stethoscope },
+  { path: '/', label: 'Início', icon: LayoutDashboard },
+  { path: '/historico', label: 'Histórico', icon: History },
+  { path: '/medico', label: 'Médico', icon: Stethoscope },
   { path: '/chat', label: 'Chat', icon: MessageCircle, badgeType: 'chat' as const },
   { path: '/perfil', label: 'Perfil', icon: User, badgeType: 'profile' as const },
 ];
