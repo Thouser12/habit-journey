@@ -15,14 +15,19 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const WRONG_ROLE_ERROR = 'Esta conta e de medico. Use o app do medico.';
 
-async function validatePatientRole(userId: string): Promise<boolean> {
-  const { data } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', userId)
-    .maybeSingle();
-  // If role is 'doctor', block. Any other (including null/missing/legacy) treat as patient.
-  return data?.role !== 'doctor';
+/** Returns true if this account is allowed on the patient app. Permissive on errors. */
+async function isPatientAccount(userId: string): Promise<boolean> {
+  try {
+    const { data } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', userId)
+      .maybeSingle();
+    // Block only if explicitly tagged as doctor
+    return data?.role !== 'doctor';
+  } catch {
+    return true;
+  }
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -30,30 +35,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
-      if (newSession?.user) {
-        const isValid = await validatePatientRole(newSession.user.id);
-        if (!isValid) {
-          await supabase.auth.signOut();
-          setSession(null);
-          setLoading(false);
-          return;
-        }
-      }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setSession(newSession);
       setLoading(false);
+
+      // Validate role in background; sign out if not allowed
+      if (newSession?.user) {
+        isPatientAccount(newSession.user.id).then(ok => {
+          if (!ok) supabase.auth.signOut();
+        });
+      }
     });
 
-    supabase.auth.getSession().then(async ({ data: { session: current } }) => {
-      if (current?.user) {
-        const isValid = await validatePatientRole(current.user.id);
-        if (!isValid) {
-          await supabase.auth.signOut();
-          setSession(null);
-          setLoading(false);
-          return;
-        }
-      }
+    supabase.auth.getSession().then(({ data: { session: current } }) => {
       setSession(current);
       setLoading(false);
     });
@@ -78,8 +72,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) return { error: error.message };
 
     if (data.user) {
-      const isValid = await validatePatientRole(data.user.id);
-      if (!isValid) {
+      const ok = await isPatientAccount(data.user.id);
+      if (!ok) {
         await supabase.auth.signOut();
         return { error: WRONG_ROLE_ERROR };
       }
