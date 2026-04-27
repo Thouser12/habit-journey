@@ -3,11 +3,16 @@ import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { getAppOrigin } from '@/lib/platform';
 
+interface SignUpResult {
+  error: string | null;
+  needsEmailConfirmation: boolean;
+}
+
 interface AuthContextType {
   session: Session | null;
   user: User | null;
   loading: boolean;
-  signUp: (email: string, password: string, name: string) => Promise<{ error: string | null }>;
+  signUp: (email: string, password: string, name: string) => Promise<SignUpResult>;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 }
@@ -34,8 +39,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, name: string) => {
-    const { error } = await supabase.auth.signUp({
+  const signUp = async (email: string, password: string, name: string): Promise<SignUpResult> => {
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -43,7 +48,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         emailRedirectTo: getAppOrigin(),
       },
     });
-    return { error: error?.message ?? null };
+
+    if (error) return { error: error.message, needsEmailConfirmation: false };
+
+    // Supabase returns data.user with empty identities[] when email is already registered
+    // and confirmed (silent response to prevent email enumeration). Treat as duplicate.
+    if (data.user && data.user.identities && data.user.identities.length === 0) {
+      return {
+        error: 'Este email ja esta cadastrado. Faca login ou recupere sua senha.',
+        needsEmailConfirmation: false,
+      };
+    }
+
+    return { error: null, needsEmailConfirmation: !data.session };
   };
 
   const signIn = async (email: string, password: string) => {

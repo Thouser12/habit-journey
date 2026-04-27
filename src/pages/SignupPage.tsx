@@ -29,12 +29,14 @@ const SignupPage = () => {
     setError("");
     setIsLoading(true);
 
-    const { error } = await signUp(email, password, name.trim());
+    const { error, needsEmailConfirmation } = await signUp(email, password, name.trim());
 
     if (error) {
       setError(error);
-    } else {
+    } else if (needsEmailConfirmation) {
       setSuccess(true);
+    } else {
+      navigate("/");
     }
 
     setIsLoading(false);
@@ -46,12 +48,12 @@ const SignupPage = () => {
         <Card className="w-full max-w-sm border-border/50 shadow-lg shadow-black/20">
           <CardContent className="pt-6 text-center space-y-4">
             <img src={logo} alt="Uberlingen" className="w-16 h-16 object-contain mx-auto" />
-            <h2 className="text-xl font-bold text-foreground">Conta criada!</h2>
+            <h2 className="text-xl font-bold text-foreground">Verifique seu email</h2>
             <p className="text-sm text-muted-foreground">
-              Sua conta foi criada com sucesso. Faça login para começar.
+              Enviamos um link de confirmação para <strong className="text-foreground">{email}</strong>. Clique nele para ativar sua conta.
             </p>
             <Button variant="outline" className="w-full" onClick={() => navigate("/login")}>
-              Ir para Login
+              Voltar ao Login
             </Button>
           </CardContent>
         </Card>
