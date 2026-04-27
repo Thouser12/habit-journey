@@ -43,7 +43,7 @@ const ChatPage = () => {
   if (!connected) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-lg px-4 py-6">
+        <div className="mx-auto max-w-lg px-4 pb-safe-24 pt-safe-6">
           <div className="mb-6 flex items-center gap-3">
             <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
               <ArrowLeft className="h-5 w-5" />
@@ -72,7 +72,7 @@ const ChatPage = () => {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       {/* Header */}
-      <div className="flex items-center gap-3 border-b border-border px-4 py-3">
+      <div className="flex items-center gap-3 border-b border-border px-4 pb-3 pt-[calc(env(safe-area-inset-top)+0.75rem)]">
         <button onClick={() => navigate('/')} className="text-muted-foreground">
           <ArrowLeft className="h-5 w-5" />
         </button>
@@ -125,7 +125,7 @@ const ChatPage = () => {
       </div>
 
       {/* Input */}
-      <div className="fixed bottom-16 left-0 right-0 border-t border-border bg-card px-4 py-3">
+      <div className="fixed bottom-safe-nav left-0 right-0 border-t border-border bg-card px-4 py-3">
         <div className="mx-auto flex max-w-lg items-center gap-2">
           <input
             type="text"

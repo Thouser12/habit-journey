@@ -64,7 +64,7 @@ const LevelPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-lg px-4 pb-24 pt-6">
+      <div className="mx-auto max-w-lg px-4 pb-safe-24 pt-safe-6">
         <div className="mb-8 flex items-center gap-3">
           <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />

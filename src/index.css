@@ -134,3 +134,15 @@
   0%, 100% { filter: drop-shadow(0 0 8px rgba(159, 196, 218, 0.4)); }
   50% { filter: drop-shadow(0 0 20px rgba(159, 196, 218, 0.7)); }
 }
+
+@layer utilities {
+  .pt-safe { padding-top: env(safe-area-inset-top); }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+  .pt-safe-6 { padding-top: calc(env(safe-area-inset-top) + 1.5rem); }
+  .pb-safe-24 { padding-bottom: calc(env(safe-area-inset-bottom) + 6rem); }
+  .py-safe-8 {
+    padding-top: calc(env(safe-area-inset-top) + 2rem);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 2rem);
+  }
+  .bottom-safe-nav { bottom: calc(4rem + env(safe-area-inset-bottom)); }
+}
