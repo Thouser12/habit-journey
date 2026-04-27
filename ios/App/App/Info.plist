@@ -17,6 +17,14 @@
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Para tirar uma foto de perfil.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Para escolher uma foto de perfil da galeria.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Para salvar a foto de perfil na sua galeria.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Nao gravamos audio. Esta permissao e exigida pelo sistema ao acessar a camera.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
