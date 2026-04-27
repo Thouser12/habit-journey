@@ -44,7 +44,7 @@ const SignupPage = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-safe-8">
         <Card className="w-full max-w-sm border-border/50 shadow-lg shadow-black/20">
           <CardContent className="pt-6 text-center space-y-4">
             <img src={logo} alt="Uberlingen" className="w-16 h-16 object-contain mx-auto" />
@@ -62,7 +62,7 @@ const SignupPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-safe-8">
       <div className="flex flex-col items-center mb-10">
         <img src={logo} alt="Uberlingen" className="w-24 h-24 object-contain mb-5" />
         <h1 className="text-2xl font-bold text-foreground tracking-tight">Uberlingen</h1>
