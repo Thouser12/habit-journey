@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "427408618460",
+    "project_id": "uberlingen-35d30",
+    "storage_bucket": "uberlingen-35d30.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427408618460:android:126b3081f56b345dd49519",
+        "android_client_info": {
+          "package_name": "app.uberlingen.patient"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACIzN2FX5Xf7d8fHqSXnUrSUQiDjlMggE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
