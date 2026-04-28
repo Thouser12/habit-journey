@@ -133,7 +133,7 @@ const ChatPage = () => {
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSend()}
-            className="flex-1 rounded-full bg-secondary py-2.5 pl-4 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            className="flex-1 rounded-full bg-secondary py-2.5 pl-4 pr-4 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary md:text-sm"
           />
           <button
             onClick={handleSend}
