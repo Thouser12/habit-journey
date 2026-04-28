@@ -8,6 +8,9 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { BottomNav } from "@/components/BottomNav";
 import { setupDeepLinkHandler } from "@/lib/deeplink";
+import { getReminderSettings, scheduleDailyReminder } from "@/lib/dailyReminder";
+import { setupPushNotifications, teardownPushNotifications } from "@/lib/pushNotifications";
+import { useAuth } from "@/contexts/AuthContext";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
@@ -39,6 +42,27 @@ function DeepLinkBridge() {
   return null;
 }
 
+function ReminderBootstrap() {
+  useEffect(() => {
+    void scheduleDailyReminder(getReminderSettings());
+  }, []);
+  return null;
+}
+
+function PushBridge() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user?.id) {
+      void setupPushNotifications(user.id, navigate);
+    }
+    return () => {
+      void teardownPushNotifications();
+    };
+  }, [user?.id, navigate]);
+  return null;
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -47,6 +71,8 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <DeepLinkBridge />
+          <ReminderBootstrap />
+          <PushBridge />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />

@@ -25,6 +25,12 @@
 	<string>Para salvar a foto de perfil na sua galeria.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Nao gravamos audio. Esta permissao e exigida pelo sistema ao acessar a camera.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
