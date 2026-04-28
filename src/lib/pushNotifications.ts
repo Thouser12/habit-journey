@@ -6,6 +6,7 @@ import {
   type Token,
 } from '@capacitor/push-notifications';
 import type { NavigateFunction } from 'react-router-dom';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
 const APP_NAME = 'patient';
@@ -30,11 +31,14 @@ export async function setupPushNotifications(
       const requested = await PushNotifications.requestPermissions();
       display = requested.receive;
     }
-    if (display !== 'granted') return;
+    if (display !== 'granted') {
+      toast.error('Permissao de notificacoes negada');
+      return;
+    }
 
     const tokenSub = await PushNotifications.addListener('registration', async (token: Token) => {
       try {
-        await supabase
+        const { error } = await supabase
           .from('device_tokens')
           .upsert(
             {
@@ -45,13 +49,24 @@ export async function setupPushNotifications(
             },
             { onConflict: 'token' },
           );
+        if (error) {
+          toast.error(`Erro ao salvar token: ${error.message}`);
+          // eslint-disable-next-line no-console
+          console.error('Failed to upsert device token:', error);
+        } else {
+          toast.success('Push registrado');
+        }
       } catch (err) {
+        const msg = err instanceof Error ? err.message : 'erro desconhecido';
+        toast.error(`Excecao ao salvar token: ${msg}`);
         // eslint-disable-next-line no-console
         console.error('Failed to upsert device token:', err);
       }
     });
 
     const errorSub = await PushNotifications.addListener('registrationError', (err) => {
+      const msg = (err as { error?: string })?.error ?? JSON.stringify(err);
+      toast.error(`Push registration error: ${msg}`);
       // eslint-disable-next-line no-console
       console.error('Push registration error:', err);
     });
