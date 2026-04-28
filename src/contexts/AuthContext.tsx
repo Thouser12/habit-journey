@@ -3,6 +3,7 @@ import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { getAppOrigin } from '@/lib/platform';
 import { clearAllCachedProfiles } from '@/lib/profileCache';
+import { cancelDailyReminder, clearReminderSettings } from '@/lib/dailyReminder';
 
 interface SignUpResult {
   error: string | null;
@@ -90,6 +91,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     clearAllCachedProfiles();
+    clearReminderSettings();
+    await cancelDailyReminder();
     await supabase.auth.signOut();
   };
 

@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import LevelBadge from '@/components/LevelBadge';
 import { ProfileEditModal } from '@/components/ProfileEditModal';
 import { MonthCalendar } from '@/components/MonthCalendar';
+import { DailyReminderSettings } from '@/components/DailyReminderSettings';
 import { notifyAchievementsSeen } from '@/hooks/useUnseenAchievements';
 import { ArrowLeft, Flame, Target, Award, Calendar, Zap, Heart, LogOut, Pencil, TrendingUp, Star, Crown } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -288,6 +289,9 @@ const ProfilePage = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Daily reminder */}
+        <DailyReminderSettings />
 
         {/* Sign Out */}
         <Button
