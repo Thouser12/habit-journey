@@ -11,6 +11,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { cropImageToSquare } from '@/lib/crop-image';
 import { ImageCropDialog } from '@/components/ImageCropDialog';
+import { setCachedProfile } from '@/lib/profileCache';
 
 interface ProfileEditModalProps {
   open: boolean;
@@ -102,6 +103,7 @@ export function ProfileEditModal({
 
       if (error) throw error;
 
+      setCachedProfile(authUser.id, { name: name.trim(), avatarUrl });
       onSaved(name.trim(), avatarUrl);
       onOpenChange(false);
       toast({ title: 'Perfil atualizado' });

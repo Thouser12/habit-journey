@@ -4,6 +4,7 @@ import { GOALS_BY_LEVEL, LEVEL_ORDER } from '@/data/goals';
 import { format, differenceInDays, parseISO } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { getCachedProfile, setCachedProfile } from '@/lib/profileCache';
 
 const STORAGE_KEY = 'health-tracker-user';
 
@@ -45,6 +46,21 @@ export function useUserData() {
 
   useEffect(() => {
     if (!authUser || initialized) return;
+    // Hydrate name/avatar/level from cache for instant render. Source of
+    // truth is still Supabase, which loadFromSupabase fetches right after.
+    const cached = getCachedProfile(authUser.id);
+    if (cached) {
+      const cachedLevel = LEVEL_ORDER.includes(cached.level as Level)
+        ? (cached.level as Level)
+        : 'bronze';
+      setUser(prev => ({
+        ...prev,
+        name: cached.name,
+        avatarUrl: cached.avatarUrl,
+        level: cachedLevel,
+        goals: prev.goals.length === 0 ? createGoals(cachedLevel) : prev.goals,
+      }));
+    }
     loadFromSupabase();
   }, [authUser]);
 
@@ -170,6 +186,7 @@ export function useUserData() {
       weeklyHistory,
       doctorConnection,
     });
+    setCachedProfile(authUser.id, { name, avatarUrl, level });
     setLoading(false);
     setInitialized(true);
   };
@@ -234,6 +251,7 @@ export function useUserData() {
     const newGoals = createGoals(level, customGoals);
 
     setUser(prev => ({ ...prev, level, goals: newGoals }));
+    setCachedProfile(authUser.id, { level });
 
     supabase.from('profiles').update({
       level,
