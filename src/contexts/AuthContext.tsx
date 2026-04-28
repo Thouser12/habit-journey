@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { getAppOrigin } from '@/lib/platform';
+import { clearAllCachedProfiles } from '@/lib/profileCache';
 
 interface SignUpResult {
   error: string | null;
@@ -88,6 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
+    clearAllCachedProfiles();
     await supabase.auth.signOut();
   };
 
